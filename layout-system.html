@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Layout System – Effectful Design System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: 'var(--background)',
+            foreground: 'var(--foreground)',
+            card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+            muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+            border: 'var(--border)',
+            input: 'var(--input)',
+            primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+            secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+            accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+            destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
+            ring: 'var(--ring)',
+          },
+          borderColor: { DEFAULT: 'var(--border)' },
+        },
+      },
+    }
+  </script>
+  <style>
+    :root { --background: oklch(0.985 0.002 247.839); --foreground: oklch(0.141 0.005 285.823); --card: #ffffff; --card-foreground: oklch(0.141 0.005 285.823); --muted: oklch(0.967 0.001 286.375); --muted-foreground: oklch(0.552 0.016 285.938); --border: oklch(0.92 0.004 286.32); --input: oklch(0.92 0.004 286.32); --primary: oklch(0.21 0.006 285.885); --primary-foreground: oklch(0.985 0.002 247.839); --secondary: oklch(0.967 0.001 286.375); --secondary-foreground: oklch(0.21 0.006 285.885); --accent: oklch(0.541 0.281 293.009); --accent-foreground: #ffffff; --destructive: oklch(0.505 0.213 27.518); --destructive-foreground: #ffffff; --ring: oklch(0.552 0.016 285.938); --radius: 0.5rem; }
+    .dark { --background: oklch(0.141 0.005 285.823); --foreground: oklch(0.985 0.002 247.839); --card: oklch(0.21 0.006 285.885); --card-foreground: oklch(0.985 0.002 247.839); --muted: oklch(0.274 0.006 286.033); --muted-foreground: oklch(0.705 0.015 286.067); --border: oklch(0.274 0.006 286.033); --input: oklch(0.274 0.006 286.033); --primary: oklch(0.985 0.002 247.839); --primary-foreground: oklch(0.21 0.006 285.885); --secondary: oklch(0.274 0.006 286.033); --secondary-foreground: oklch(0.985 0.002 247.839); --accent: oklch(0.491 0.27 292.581); --accent-foreground: #ffffff; --destructive: oklch(0.505 0.213 27.518); --destructive-foreground: #ffffff; --ring: oklch(0.705 0.015 286.067); }
+    body { background-color: var(--background); color: var(--foreground); font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  </style>
+</head>
+<body class="min-h-screen">
+  <nav class="border-b sticky top-0 z-50" style="border-color: var(--border); background-color: var(--background);">
+    <div class="container mx-auto px-6 lg:px-8">
+      <div class="flex h-14 items-center justify-between">
+        <a href="index.html" class="text-sm font-medium" style="color: var(--foreground);">Effectful Design System</a>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="typography.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Typography</a>
+          <a href="colors.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Colors</a>
+          <a href="spacing.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Spacing</a>
+          <a href="border-radius.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Border Radius</a>
+          <a href="layout-system.html" class="text-sm" style="color: var(--foreground);">Layout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <a href="index.html" class="inline-flex items-center gap-2 text-sm transition-colors" style="color: var(--muted-foreground);">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Foundations
+    </a>
+  </div>
+
+  <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+    <div class="max-w-5xl">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Layout System</h1>
+      <p class="text-lg mb-16 leading-relaxed max-w-3xl" style="color: var(--muted-foreground);">A responsive layout system built on CSS Grid and Flexbox. Breakpoints, containers, and grid utilities create flexible, device-adaptive layouts.</p>
+      <div class="mb-20" style="border-top: 1px solid var(--border);"></div>
+
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Breakpoints</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Responsive breakpoints follow a mobile-first approach. Each breakpoint applies styles at that width and above.</p>
+        <div class="rounded-lg border overflow-hidden mb-8" style="border-color: var(--border);">
+          <table class="w-full text-sm">
+            <thead><tr style="border-bottom: 1px solid var(--border); background-color: var(--muted);"><th class="text-left p-3 font-medium">Prefix</th><th class="text-left p-3 font-medium">Min Width</th><th class="text-left p-3 font-medium">Target</th></tr></thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3 font-mono">sm</td><td class="p-3 font-mono">640px</td><td class="p-3" style="color: var(--muted-foreground);">Large phones (landscape)</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3 font-mono">md</td><td class="p-3 font-mono">768px</td><td class="p-3" style="color: var(--muted-foreground);">Tablets</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3 font-mono">lg</td><td class="p-3 font-mono">1024px</td><td class="p-3" style="color: var(--muted-foreground);">Laptops / small desktops</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3 font-mono">xl</td><td class="p-3 font-mono">1280px</td><td class="p-3" style="color: var(--muted-foreground);">Desktops</td></tr>
+              <tr><td class="p-3 font-mono">2xl</td><td class="p-3 font-mono">1536px</td><td class="p-3" style="color: var(--muted-foreground);">Large desktops</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3"><code class="text-xs font-mono w-8 shrink-0" style="color: var(--muted-foreground);">sm</code><div class="h-6 rounded bg-violet-200" style="width: 41.6%;"><div class="h-full rounded bg-violet-500 flex items-center justify-center text-xs text-white font-mono">640px</div></div></div>
+          <div class="flex items-center gap-3"><code class="text-xs font-mono w-8 shrink-0" style="color: var(--muted-foreground);">md</code><div class="h-6 rounded bg-violet-200" style="width: 50%;"><div class="h-full rounded bg-violet-500 flex items-center justify-center text-xs text-white font-mono">768px</div></div></div>
+          <div class="flex items-center gap-3"><code class="text-xs font-mono w-8 shrink-0" style="color: var(--muted-foreground);">lg</code><div class="h-6 rounded bg-violet-200" style="width: 66.6%;"><div class="h-full rounded bg-violet-500 flex items-center justify-center text-xs text-white font-mono">1024px</div></div></div>
+          <div class="flex items-center gap-3"><code class="text-xs font-mono w-8 shrink-0" style="color: var(--muted-foreground);">xl</code><div class="h-6 rounded bg-violet-200" style="width: 83.3%;"><div class="h-full rounded bg-violet-500 flex items-center justify-center text-xs text-white font-mono">1280px</div></div></div>
+          <div class="flex items-center gap-3"><code class="text-xs font-mono w-8 shrink-0" style="color: var(--muted-foreground);">2xl</code><div class="h-6 rounded bg-violet-200" style="width: 100%;"><div class="h-full rounded bg-violet-500 flex items-center justify-center text-xs text-white font-mono">1536px</div></div></div>
+        </div>
+      </section>
+
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Container</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">The container class centers content and sets a max-width at each breakpoint.</p>
+        <div class="rounded-lg border overflow-hidden mb-8" style="border-color: var(--border);">
+          <table class="w-full text-sm">
+            <thead><tr style="border-bottom: 1px solid var(--border); background-color: var(--muted);"><th class="text-left p-3 font-medium">Breakpoint</th><th class="text-left p-3 font-medium">Container Width</th></tr></thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3 font-mono">default</td><td class="p-3 font-mono">100%</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3 font-mono">sm (640px)</td><td class="p-3 font-mono">640px</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3 font-mono">md (768px)</td><td class="p-3 font-mono">768px</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3 font-mono">lg (1024px)</td><td class="p-3 font-mono">1024px</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3 font-mono">xl (1280px)</td><td class="p-3 font-mono">1280px</td></tr>
+              <tr><td class="p-3 font-mono">2xl (1536px)</td><td class="p-3 font-mono">1536px</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h4 class="text-sm font-medium uppercase tracking-wide mb-4" style="color: var(--muted-foreground);">Standard Pattern</h4>
+        <div class="rounded-lg border p-4 mb-6" style="border-color: var(--border); background-color: var(--muted);"><code class="text-sm font-mono">container mx-auto px-4 sm:px-6 lg:px-8</code></div>
+      </section>
+
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Max Width</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Max-width utilities constrain content width for optimal readability.</p>
+        <div class="space-y-3">
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-24 text-right shrink-0" style="color: var(--muted-foreground);">max-w-xs</code><div class="h-5 rounded bg-violet-500" style="width: 13%;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">320px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-24 text-right shrink-0" style="color: var(--muted-foreground);">max-w-sm</code><div class="h-5 rounded bg-violet-500" style="width: 16%;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">384px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-24 text-right shrink-0" style="color: var(--muted-foreground);">max-w-md</code><div class="h-5 rounded bg-violet-500" style="width: 18.6%;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">448px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-24 text-right shrink-0" style="color: var(--muted-foreground);">max-w-lg</code><div class="h-5 rounded bg-violet-500" style="width: 21%;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">512px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-24 text-right shrink-0" style="color: var(--muted-foreground);">max-w-xl</code><div class="h-5 rounded bg-violet-500" style="width: 23.5%;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">576px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-24 text-right shrink-0" style="color: var(--muted-foreground);">max-w-2xl</code><div class="h-5 rounded bg-violet-500" style="width: 27.7%;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">672px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-24 text-right shrink-0" style="color: var(--muted-foreground);">max-w-3xl</code><div class="h-5 rounded bg-violet-500" style="width: 31.2%;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">768px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-24 text-right shrink-0" style="color: var(--muted-foreground);">max-w-4xl</code><div class="h-5 rounded bg-violet-500" style="width: 36.4%;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">896px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-24 text-right shrink-0" style="color: var(--muted-foreground);">max-w-5xl</code><div class="h-5 rounded bg-violet-500" style="width: 41.6%;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">1024px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-24 text-right shrink-0" style="color: var(--muted-foreground);">max-w-prose</code><div class="h-5 rounded bg-violet-500" style="width: 27%;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">65ch</span></div>
+        </div>
+      </section>
+
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Grid System</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">CSS Grid utilities for creating flexible, responsive column layouts.</p>
+        <h3 class="text-lg font-semibold mb-4">2 Columns</h3>
+        <div class="grid grid-cols-2 gap-4 mb-8">
+          <div class="h-16 rounded-md bg-violet-100 border border-violet-300 flex items-center justify-center text-xs font-mono text-violet-700">col 1</div>
+          <div class="h-16 rounded-md bg-violet-100 border border-violet-300 flex items-center justify-center text-xs font-mono text-violet-700">col 2</div>
+        </div>
+        <h3 class="text-lg font-semibold mb-4">3 Columns</h3>
+        <div class="grid grid-cols-3 gap-4 mb-8">
+          <div class="h-16 rounded-md bg-violet-100 border border-violet-300 flex items-center justify-center text-xs font-mono text-violet-700">col 1</div>
+          <div class="h-16 rounded-md bg-violet-100 border border-violet-300 flex items-center justify-center text-xs font-mono text-violet-700">col 2</div>
+          <div class="h-16 rounded-md bg-violet-100 border border-violet-300 flex items-center justify-center text-xs font-mono text-violet-700">col 3</div>
+        </div>
+        <h3 class="text-lg font-semibold mb-4">4 Columns</h3>
+        <div class="grid grid-cols-4 gap-4 mb-8">
+          <div class="h-16 rounded-md bg-violet-100 border border-violet-300 flex items-center justify-center text-xs font-mono text-violet-700">col 1</div>
+          <div class="h-16 rounded-md bg-violet-100 border border-violet-300 flex items-center justify-center text-xs font-mono text-violet-700">col 2</div>
+          <div class="h-16 rounded-md bg-violet-100 border border-violet-300 flex items-center justify-center text-xs font-mono text-violet-700">col 3</div>
+          <div class="h-16 rounded-md bg-violet-100 border border-violet-300 flex items-center justify-center text-xs font-mono text-violet-700">col 4</div>
+        </div>
+        <h3 class="text-lg font-semibold mb-4">Gap Scale</h3>
+        <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);">
+          <table class="w-full text-sm">
+            <thead><tr style="border-bottom: 1px solid var(--border); background-color: var(--muted);"><th class="text-left p-3 font-medium">Class</th><th class="text-left p-3 font-medium">Value</th><th class="text-left p-3 font-medium">Use Case</th></tr></thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3 font-mono">gap-2</td><td class="p-3 font-mono">8px</td><td class="p-3" style="color: var(--muted-foreground);">Tight groups (icon + text)</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3 font-mono">gap-4</td><td class="p-3 font-mono">16px</td><td class="p-3" style="color: var(--muted-foreground);">Form fields, list items</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3 font-mono">gap-6</td><td class="p-3 font-mono">24px</td><td class="p-3" style="color: var(--muted-foreground);">Card grids, content sections</td></tr>
+              <tr><td class="p-3 font-mono">gap-8</td><td class="p-3 font-mono">32px</td><td class="p-3" style="color: var(--muted-foreground);">Nav items, major sections</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Responsive Patterns</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Common responsive layout patterns used throughout the design system.</p>
+        <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);">
+          <table class="w-full text-sm">
+            <thead><tr style="border-bottom: 1px solid var(--border); background-color: var(--muted);"><th class="text-left p-3 font-medium">Pattern</th><th class="text-left p-3 font-medium">Classes</th></tr></thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Responsive cards</td><td class="p-3 font-mono text-xs">grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Sidebar layout</td><td class="p-3 font-mono text-xs">grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-8</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Two-column content</td><td class="p-3 font-mono text-xs">grid grid-cols-1 md:grid-cols-2 gap-6</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Responsive text</td><td class="p-3 font-mono text-xs">text-2xl md:text-3xl lg:text-4xl</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Responsive padding</td><td class="p-3 font-mono text-xs">px-4 sm:px-6 lg:px-8</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Hidden on mobile</td><td class="p-3 font-mono text-xs">hidden md:flex</td></tr>
+              <tr><td class="p-3">Stack to row</td><td class="p-3 font-mono text-xs">flex flex-col sm:flex-row gap-4</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="pt-12 mb-20" style="border-top: 1px solid var(--border);">
+        <h2 class="text-2xl font-bold mb-6">Best Practices</h2>
+        <ul class="list-disc pl-5 space-y-3 text-sm" style="color: var(--muted-foreground);">
+          <li><strong class="font-medium" style="color: var(--foreground);">Mobile-first always.</strong> Write base styles for mobile, then add responsive prefixes for larger screens.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Use container consistently.</strong> Wrap page content in <code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">container mx-auto</code> with responsive horizontal padding.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Constrain content width.</strong> Use <code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">max-w-5xl</code> or similar to prevent text from spanning too wide on large screens.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Prefer Grid for 2D layouts.</strong> Use CSS Grid when you need both row and column control. Use Flexbox for single-axis alignment.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Test at all breakpoints.</strong> Verify layouts work at every breakpoint, not just desktop and mobile.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Avoid fixed widths.</strong> Use percentage-based or fractional widths (<code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">w-1/2</code>, <code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">flex-1</code>) for responsive elements.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

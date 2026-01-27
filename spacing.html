@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spacing – Effectful Design System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: 'var(--background)',
+            foreground: 'var(--foreground)',
+            card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+            muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+            border: 'var(--border)',
+            input: 'var(--input)',
+            primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+            secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+            accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+            destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
+            ring: 'var(--ring)',
+          },
+          borderColor: { DEFAULT: 'var(--border)' },
+        },
+      },
+    }
+  </script>
+  <style>
+    :root { --background: oklch(0.985 0.002 247.839); --foreground: oklch(0.141 0.005 285.823); --card: #ffffff; --card-foreground: oklch(0.141 0.005 285.823); --muted: oklch(0.967 0.001 286.375); --muted-foreground: oklch(0.552 0.016 285.938); --border: oklch(0.92 0.004 286.32); --input: oklch(0.92 0.004 286.32); --primary: oklch(0.21 0.006 285.885); --primary-foreground: oklch(0.985 0.002 247.839); --secondary: oklch(0.967 0.001 286.375); --secondary-foreground: oklch(0.21 0.006 285.885); --accent: oklch(0.541 0.281 293.009); --accent-foreground: #ffffff; --destructive: oklch(0.505 0.213 27.518); --destructive-foreground: #ffffff; --ring: oklch(0.552 0.016 285.938); --radius: 0.5rem; }
+    .dark { --background: oklch(0.141 0.005 285.823); --foreground: oklch(0.985 0.002 247.839); --card: oklch(0.21 0.006 285.885); --card-foreground: oklch(0.985 0.002 247.839); --muted: oklch(0.274 0.006 286.033); --muted-foreground: oklch(0.705 0.015 286.067); --border: oklch(0.274 0.006 286.033); --input: oklch(0.274 0.006 286.033); --primary: oklch(0.985 0.002 247.839); --primary-foreground: oklch(0.21 0.006 285.885); --secondary: oklch(0.274 0.006 286.033); --secondary-foreground: oklch(0.985 0.002 247.839); --accent: oklch(0.491 0.27 292.581); --accent-foreground: #ffffff; --destructive: oklch(0.505 0.213 27.518); --destructive-foreground: #ffffff; --ring: oklch(0.705 0.015 286.067); }
+    body { background-color: var(--background); color: var(--foreground); font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  </style>
+</head>
+<body class="min-h-screen">
+  <nav class="border-b sticky top-0 z-50" style="border-color: var(--border); background-color: var(--background);">
+    <div class="container mx-auto px-6 lg:px-8">
+      <div class="flex h-14 items-center justify-between">
+        <a href="index.html" class="text-sm font-medium" style="color: var(--foreground);">Effectful Design System</a>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="typography.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Typography</a>
+          <a href="colors.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Colors</a>
+          <a href="spacing.html" class="text-sm" style="color: var(--foreground);">Spacing</a>
+          <a href="border-radius.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Border Radius</a>
+          <a href="layout-system.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Layout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <a href="index.html" class="inline-flex items-center gap-2 text-sm transition-colors" style="color: var(--muted-foreground);">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Foundations
+    </a>
+  </div>
+
+  <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+    <div class="max-w-5xl">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Spacing</h1>
+      <p class="text-lg mb-16 leading-relaxed max-w-3xl" style="color: var(--muted-foreground);">A consistent spacing scale creates visual rhythm and hierarchy. Based on a 4px base unit, the scale provides predictable increments for padding, margin, and gap values.</p>
+      <div class="mb-20" style="border-top: 1px solid var(--border);"></div>
+
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Spacing Scale</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">The spacing scale follows Tailwind's default values. Each step is a multiple of 4px (0.25rem).</p>
+        <div class="space-y-3">
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-10 text-right shrink-0" style="color: var(--muted-foreground);">0</code><div class="h-5 rounded bg-violet-500" style="width: 0px; min-width: 2px;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">0px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-10 text-right shrink-0" style="color: var(--muted-foreground);">0.5</code><div class="h-5 rounded bg-violet-500" style="width: 2px;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">2px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-10 text-right shrink-0" style="color: var(--muted-foreground);">1</code><div class="h-5 rounded bg-violet-500" style="width: 4px;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">4px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-10 text-right shrink-0" style="color: var(--muted-foreground);">1.5</code><div class="h-5 rounded bg-violet-500" style="width: 6px;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">6px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-10 text-right shrink-0" style="color: var(--muted-foreground);">2</code><div class="h-5 rounded bg-violet-500" style="width: 8px;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">8px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-10 text-right shrink-0" style="color: var(--muted-foreground);">3</code><div class="h-5 rounded bg-violet-500" style="width: 12px;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">12px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-10 text-right shrink-0" style="color: var(--muted-foreground);">4</code><div class="h-5 rounded bg-violet-500" style="width: 16px;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">16px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-10 text-right shrink-0" style="color: var(--muted-foreground);">5</code><div class="h-5 rounded bg-violet-500" style="width: 20px;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">20px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-10 text-right shrink-0" style="color: var(--muted-foreground);">6</code><div class="h-5 rounded bg-violet-500" style="width: 24px;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">24px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-10 text-right shrink-0" style="color: var(--muted-foreground);">8</code><div class="h-5 rounded bg-violet-500" style="width: 32px;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">32px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-10 text-right shrink-0" style="color: var(--muted-foreground);">10</code><div class="h-5 rounded bg-violet-500" style="width: 40px;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">40px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-10 text-right shrink-0" style="color: var(--muted-foreground);">12</code><div class="h-5 rounded bg-violet-500" style="width: 48px;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">48px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-10 text-right shrink-0" style="color: var(--muted-foreground);">16</code><div class="h-5 rounded bg-violet-500" style="width: 64px;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">64px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-10 text-right shrink-0" style="color: var(--muted-foreground);">20</code><div class="h-5 rounded bg-violet-500" style="width: 80px;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">80px</span></div>
+          <div class="flex items-center gap-4"><code class="text-xs font-mono w-10 text-right shrink-0" style="color: var(--muted-foreground);">24</code><div class="h-5 rounded bg-violet-500" style="width: 96px;"></div><span class="text-xs font-mono" style="color: var(--muted-foreground);">96px</span></div>
+        </div>
+      </section>
+
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Common Usage</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Recommended spacing values for common component patterns.</p>
+        <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);">
+          <table class="w-full text-sm">
+            <thead><tr style="border-bottom: 1px solid var(--border); background-color: var(--muted);"><th class="text-left p-3 font-medium">Component</th><th class="text-left p-3 font-medium">Property</th><th class="text-left p-3 font-medium">Value</th></tr></thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Button (sm)</td><td class="p-3" style="color: var(--muted-foreground);">padding</td><td class="p-3 font-mono">px-3 py-1.5</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Button (md)</td><td class="p-3" style="color: var(--muted-foreground);">padding</td><td class="p-3 font-mono">px-4 py-2</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Button (lg)</td><td class="p-3" style="color: var(--muted-foreground);">padding</td><td class="p-3 font-mono">px-6 py-3</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Input</td><td class="p-3" style="color: var(--muted-foreground);">padding</td><td class="p-3 font-mono">px-3 py-2</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Card</td><td class="p-3" style="color: var(--muted-foreground);">padding</td><td class="p-3 font-mono">p-6</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Section</td><td class="p-3" style="color: var(--muted-foreground);">margin-bottom</td><td class="p-3 font-mono">mb-20</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Form fields</td><td class="p-3" style="color: var(--muted-foreground);">gap</td><td class="p-3 font-mono">gap-4</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Grid items</td><td class="p-3" style="color: var(--muted-foreground);">gap</td><td class="p-3 font-mono">gap-6</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Nav items</td><td class="p-3" style="color: var(--muted-foreground);">gap</td><td class="p-3 font-mono">gap-8</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Page container</td><td class="p-3" style="color: var(--muted-foreground);">padding</td><td class="p-3 font-mono">px-4 sm:px-6 lg:px-8</td></tr>
+              <tr><td class="p-3">Page vertical</td><td class="p-3" style="color: var(--muted-foreground);">padding</td><td class="p-3 font-mono">py-12 md:py-16</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Spacing in Practice</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Visual examples showing how spacing values are applied in real components.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <h3 class="text-lg font-semibold mb-4">Card Component</h3>
+            <div class="rounded-lg border relative" style="border-color: var(--border);">
+              <div class="p-6">
+                <div class="bg-violet-100 border border-violet-300 rounded px-2 py-0.5 text-xs text-violet-700 inline-block mb-2">p-6 (24px)</div>
+                <h4 class="font-semibold mb-2">Card Title</h4>
+                <div class="bg-violet-100 border border-violet-300 rounded px-2 py-0.5 text-xs text-violet-700 inline-block mb-2">mb-2 (8px)</div>
+                <p class="text-sm" style="color: var(--muted-foreground);">Card description goes here with supporting text.</p>
+                <div class="bg-violet-100 border border-violet-300 rounded px-2 py-0.5 text-xs text-violet-700 inline-block mt-4">mt-4 (16px)</div>
+                <div class="mt-4"><button class="px-4 py-2 rounded-md text-sm font-medium text-white" style="background-color: var(--primary);">Action</button></div>
+              </div>
+            </div>
+          </div>
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <h3 class="text-lg font-semibold mb-4">Form Layout</h3>
+            <div class="space-y-4">
+              <div>
+                <label class="text-sm font-medium mb-1.5 block">Label</label>
+                <div class="bg-violet-100 border border-violet-300 rounded px-2 py-0.5 text-xs text-violet-700 inline-block mb-1">mb-1.5 (6px)</div>
+                <input type="text" placeholder="Input field" class="w-full px-3 py-2 rounded-md border text-sm" style="border-color: var(--input); background-color: var(--background);">
+              </div>
+              <div class="bg-violet-100 border border-violet-300 rounded px-2 py-0.5 text-xs text-violet-700 inline-block">gap-4 (16px)</div>
+              <div>
+                <label class="text-sm font-medium mb-1.5 block">Label</label>
+                <input type="text" placeholder="Input field" class="w-full px-3 py-2 rounded-md border text-sm" style="border-color: var(--input); background-color: var(--background);">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pt-12 mb-20" style="border-top: 1px solid var(--border);">
+        <h2 class="text-2xl font-bold mb-6">Best Practices</h2>
+        <ul class="list-disc pl-5 space-y-3 text-sm" style="color: var(--muted-foreground);">
+          <li><strong class="font-medium" style="color: var(--foreground);">Stick to the scale.</strong> Always use values from the spacing scale rather than arbitrary pixel values.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Use consistent increments.</strong> Jump by consistent steps (e.g., 2 &rarr; 4 &rarr; 6 &rarr; 8) rather than random values.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Larger spacing for sections.</strong> Use <code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">mb-16</code> to <code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">mb-20</code> between major page sections.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Prefer gap over margin.</strong> Use CSS <code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">gap</code> in flex/grid layouts instead of margins on children.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Responsive spacing.</strong> Use responsive prefixes (<code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">md:p-8</code>) to increase spacing on larger screens.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Group related elements.</strong> Use tighter spacing (2-4) within groups and larger spacing (6-8) between groups.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

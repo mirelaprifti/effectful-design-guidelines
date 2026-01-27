@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typography – Effectful Design System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: 'var(--background)',
+            foreground: 'var(--foreground)',
+            card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+            muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+            border: 'var(--border)',
+            input: 'var(--input)',
+            primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+            secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+            accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+            destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
+            ring: 'var(--ring)',
+          },
+          borderColor: {
+            DEFAULT: 'var(--border)',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    :root {
+      --background: oklch(0.985 0.002 247.839);
+      --foreground: oklch(0.141 0.005 285.823);
+      --card: #ffffff;
+      --card-foreground: oklch(0.141 0.005 285.823);
+      --muted: oklch(0.967 0.001 286.375);
+      --muted-foreground: oklch(0.552 0.016 285.938);
+      --border: oklch(0.92 0.004 286.32);
+      --input: oklch(0.92 0.004 286.32);
+      --primary: oklch(0.21 0.006 285.885);
+      --primary-foreground: oklch(0.985 0.002 247.839);
+      --secondary: oklch(0.967 0.001 286.375);
+      --secondary-foreground: oklch(0.21 0.006 285.885);
+      --accent: oklch(0.541 0.281 293.009);
+      --accent-foreground: #ffffff;
+      --destructive: oklch(0.505 0.213 27.518);
+      --destructive-foreground: #ffffff;
+      --ring: oklch(0.552 0.016 285.938);
+      --radius: 0.5rem;
+    }
+    .dark {
+      --background: oklch(0.141 0.005 285.823);
+      --foreground: oklch(0.985 0.002 247.839);
+      --card: oklch(0.21 0.006 285.885);
+      --card-foreground: oklch(0.985 0.002 247.839);
+      --muted: oklch(0.274 0.006 286.033);
+      --muted-foreground: oklch(0.705 0.015 286.067);
+      --border: oklch(0.274 0.006 286.033);
+      --input: oklch(0.274 0.006 286.033);
+      --primary: oklch(0.985 0.002 247.839);
+      --primary-foreground: oklch(0.21 0.006 285.885);
+      --secondary: oklch(0.274 0.006 286.033);
+      --secondary-foreground: oklch(0.985 0.002 247.839);
+      --accent: oklch(0.491 0.27 292.581);
+      --accent-foreground: #ffffff;
+      --destructive: oklch(0.505 0.213 27.518);
+      --destructive-foreground: #ffffff;
+      --ring: oklch(0.705 0.015 286.067);
+    }
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <!-- Navigation -->
+  <nav class="border-b sticky top-0 z-50" style="border-color: var(--border); background-color: var(--background);">
+    <div class="container mx-auto px-6 lg:px-8">
+      <div class="flex h-14 items-center justify-between">
+        <a href="index.html" class="text-sm font-medium" style="color: var(--foreground);">Effectful Design System</a>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="typography.html" class="text-sm" style="color: var(--foreground);">Typography</a>
+          <a href="colors.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Colors</a>
+          <a href="spacing.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Spacing</a>
+          <a href="border-radius.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Border Radius</a>
+          <a href="layout-system.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Layout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumb -->
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <a href="index.html" class="inline-flex items-center gap-2 text-sm transition-colors" style="color: var(--muted-foreground);">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Foundations
+    </a>
+  </div>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+    <div class="max-w-5xl">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Typography</h1>
+      <p class="text-lg mb-16 leading-relaxed max-w-3xl" style="color: var(--muted-foreground);">
+        A systematic type scale with consistent sizing, weights, and spacing. Typography choices establish hierarchy, improve readability, and create visual rhythm.
+      </p>
+      <div class="mb-20" style="border-top: 1px solid var(--border);"></div>
+
+      <!-- Type Scale -->
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Type Scale</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">The type scale uses a modular progression that creates clear visual hierarchy.</p>
+
+        <div class="space-y-6">
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-24 shrink-0" style="color: var(--muted-foreground);">text-xs</code>
+            <span class="text-xs">The quick brown fox jumps over the lazy dog</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">12px</span>
+          </div>
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-24 shrink-0" style="color: var(--muted-foreground);">text-sm</code>
+            <span class="text-sm">The quick brown fox jumps over the lazy dog</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">14px</span>
+          </div>
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-24 shrink-0" style="color: var(--muted-foreground);">text-base</code>
+            <span class="text-base">The quick brown fox jumps over the lazy dog</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">16px</span>
+          </div>
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-24 shrink-0" style="color: var(--muted-foreground);">text-lg</code>
+            <span class="text-lg">The quick brown fox jumps over the lazy dog</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">18px</span>
+          </div>
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-24 shrink-0" style="color: var(--muted-foreground);">text-xl</code>
+            <span class="text-xl">The quick brown fox jumps over the lazy dog</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">20px</span>
+          </div>
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-24 shrink-0" style="color: var(--muted-foreground);">text-2xl</code>
+            <span class="text-2xl">The quick brown fox jumps over the lazy dog</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">24px</span>
+          </div>
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-24 shrink-0" style="color: var(--muted-foreground);">text-3xl</code>
+            <span class="text-3xl">The quick brown fox jumps</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">30px</span>
+          </div>
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-24 shrink-0" style="color: var(--muted-foreground);">text-4xl</code>
+            <span class="text-4xl">The quick brown fox</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">36px</span>
+          </div>
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-24 shrink-0" style="color: var(--muted-foreground);">text-5xl</code>
+            <span class="text-5xl">The quick brown</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">48px</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Font Weights -->
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Font Weights</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Use font weights to create emphasis and establish content hierarchy within the same size.</p>
+        <div class="space-y-6">
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-28 shrink-0" style="color: var(--muted-foreground);">font-light</code>
+            <span class="text-xl font-light">Light 300</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">300</span>
+          </div>
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-28 shrink-0" style="color: var(--muted-foreground);">font-normal</code>
+            <span class="text-xl font-normal">Normal 400</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">400</span>
+          </div>
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-28 shrink-0" style="color: var(--muted-foreground);">font-medium</code>
+            <span class="text-xl font-medium">Medium 500</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">500</span>
+          </div>
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-28 shrink-0" style="color: var(--muted-foreground);">font-semibold</code>
+            <span class="text-xl font-semibold">Semibold 600</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">600</span>
+          </div>
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-28 shrink-0" style="color: var(--muted-foreground);">font-bold</code>
+            <span class="text-xl font-bold">Bold 700</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">700</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Line Height -->
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Line Height</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Line height controls the vertical rhythm and readability of text blocks.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="rounded-lg border p-5" style="border-color: var(--border);">
+            <div class="flex items-center justify-between mb-3">
+              <code class="text-xs font-mono" style="color: var(--muted-foreground);">leading-none</code>
+              <span class="text-xs font-mono" style="color: var(--muted-foreground);">1</span>
+            </div>
+            <p class="text-sm leading-none">The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.</p>
+          </div>
+          <div class="rounded-lg border p-5" style="border-color: var(--border);">
+            <div class="flex items-center justify-between mb-3">
+              <code class="text-xs font-mono" style="color: var(--muted-foreground);">leading-tight</code>
+              <span class="text-xs font-mono" style="color: var(--muted-foreground);">1.25</span>
+            </div>
+            <p class="text-sm leading-tight">The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.</p>
+          </div>
+          <div class="rounded-lg border p-5" style="border-color: var(--border);">
+            <div class="flex items-center justify-between mb-3">
+              <code class="text-xs font-mono" style="color: var(--muted-foreground);">leading-snug</code>
+              <span class="text-xs font-mono" style="color: var(--muted-foreground);">1.375</span>
+            </div>
+            <p class="text-sm leading-snug">The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.</p>
+          </div>
+          <div class="rounded-lg border p-5" style="border-color: var(--border);">
+            <div class="flex items-center justify-between mb-3">
+              <code class="text-xs font-mono" style="color: var(--muted-foreground);">leading-normal</code>
+              <span class="text-xs font-mono" style="color: var(--muted-foreground);">1.5</span>
+            </div>
+            <p class="text-sm leading-normal">The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.</p>
+          </div>
+          <div class="rounded-lg border p-5" style="border-color: var(--border);">
+            <div class="flex items-center justify-between mb-3">
+              <code class="text-xs font-mono" style="color: var(--muted-foreground);">leading-relaxed</code>
+              <span class="text-xs font-mono" style="color: var(--muted-foreground);">1.625</span>
+            </div>
+            <p class="text-sm leading-relaxed">The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.</p>
+          </div>
+          <div class="rounded-lg border p-5" style="border-color: var(--border);">
+            <div class="flex items-center justify-between mb-3">
+              <code class="text-xs font-mono" style="color: var(--muted-foreground);">leading-loose</code>
+              <span class="text-xs font-mono" style="color: var(--muted-foreground);">2</span>
+            </div>
+            <p class="text-sm leading-loose">The quick brown fox jumps over the lazy dog. Pack my box with five dozen liquor jugs.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Letter Spacing -->
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Letter Spacing</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Letter spacing (tracking) adjusts the space between characters.</p>
+        <div class="space-y-6">
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-32 shrink-0" style="color: var(--muted-foreground);">tracking-tighter</code>
+            <span class="text-lg tracking-tighter">The quick brown fox jumps over the lazy dog</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">-0.05em</span>
+          </div>
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-32 shrink-0" style="color: var(--muted-foreground);">tracking-tight</code>
+            <span class="text-lg tracking-tight">The quick brown fox jumps over the lazy dog</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">-0.025em</span>
+          </div>
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-32 shrink-0" style="color: var(--muted-foreground);">tracking-normal</code>
+            <span class="text-lg tracking-normal">The quick brown fox jumps over the lazy dog</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">0em</span>
+          </div>
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-32 shrink-0" style="color: var(--muted-foreground);">tracking-wide</code>
+            <span class="text-lg tracking-wide">The quick brown fox jumps over the lazy dog</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">0.025em</span>
+          </div>
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-32 shrink-0" style="color: var(--muted-foreground);">tracking-wider</code>
+            <span class="text-lg tracking-wider">The quick brown fox jumps over the lazy dog</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">0.05em</span>
+          </div>
+          <div class="flex items-baseline gap-6 pb-4" style="border-bottom: 1px solid var(--border);">
+            <code class="text-xs font-mono w-32 shrink-0" style="color: var(--muted-foreground);">tracking-widest</code>
+            <span class="text-lg tracking-widest">The quick brown fox jumps over the lazy dog</span>
+            <span class="text-xs font-mono ml-auto shrink-0" style="color: var(--muted-foreground);">0.1em</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Font Family -->
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Font Family</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">The design system uses a system font stack for both sans-serif and monospace text.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <h3 class="text-lg font-semibold mb-2">Sans-serif</h3>
+            <p class="text-xs mb-4" style="color: var(--muted-foreground);">font-sans &middot; System UI stack</p>
+            <p class="text-2xl font-light mb-2" style="font-family: system-ui, -apple-system, sans-serif;">Aa Bb Cc Dd Ee</p>
+            <p class="text-sm" style="font-family: system-ui, -apple-system, sans-serif; color: var(--muted-foreground);">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789</p>
+          </div>
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <h3 class="text-lg font-semibold mb-2">Monospace</h3>
+            <p class="text-xs mb-4" style="color: var(--muted-foreground);">font-mono &middot; Code &amp; data</p>
+            <p class="text-2xl font-light mb-2 font-mono">Aa Bb Cc Dd Ee</p>
+            <p class="text-sm font-mono" style="color: var(--muted-foreground);">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz<br>0123456789</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Best Practices -->
+      <section class="pt-12 mb-20" style="border-top: 1px solid var(--border);">
+        <h2 class="text-2xl font-bold mb-6">Best Practices</h2>
+        <ul class="list-disc pl-5 space-y-3 text-sm" style="color: var(--muted-foreground);">
+          <li><strong class="font-medium" style="color: var(--foreground);">Limit heading levels.</strong> Use no more than 3-4 heading sizes per page to maintain clear hierarchy.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Body text at 14-16px.</strong> Use <code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">text-sm</code> (14px) or <code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">text-base</code> (16px) for readable body content.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Use weight for emphasis.</strong> Prefer <code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">font-medium</code> or <code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">font-semibold</code> over font size changes when adding emphasis.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Consistent line heights.</strong> Use <code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">leading-relaxed</code> for body text, <code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">leading-tight</code> for headings.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Monospace for code.</strong> Always use <code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">font-mono</code> for code snippets, technical values, and data displays.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Respect max-width.</strong> Limit line length to 65-75 characters for optimal readability using <code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">max-w-prose</code>.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Colors – Effectful Design System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: 'var(--background)',
+            foreground: 'var(--foreground)',
+            card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+            muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+            border: 'var(--border)',
+            input: 'var(--input)',
+            primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+            secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+            accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+            destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
+            ring: 'var(--ring)',
+          },
+          borderColor: {
+            DEFAULT: 'var(--border)',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    :root {
+      --background: oklch(0.985 0.002 247.839);
+      --foreground: oklch(0.141 0.005 285.823);
+      --card: #ffffff;
+      --card-foreground: oklch(0.141 0.005 285.823);
+      --muted: oklch(0.967 0.001 286.375);
+      --muted-foreground: oklch(0.552 0.016 285.938);
+      --border: oklch(0.92 0.004 286.32);
+      --input: oklch(0.92 0.004 286.32);
+      --primary: oklch(0.21 0.006 285.885);
+      --primary-foreground: oklch(0.985 0.002 247.839);
+      --secondary: oklch(0.967 0.001 286.375);
+      --secondary-foreground: oklch(0.21 0.006 285.885);
+      --accent: oklch(0.541 0.281 293.009);
+      --accent-foreground: #ffffff;
+      --destructive: oklch(0.505 0.213 27.518);
+      --destructive-foreground: #ffffff;
+      --ring: oklch(0.552 0.016 285.938);
+      --radius: 0.5rem;
+    }
+    .dark {
+      --background: oklch(0.141 0.005 285.823);
+      --foreground: oklch(0.985 0.002 247.839);
+      --card: oklch(0.21 0.006 285.885);
+      --card-foreground: oklch(0.985 0.002 247.839);
+      --muted: oklch(0.274 0.006 286.033);
+      --muted-foreground: oklch(0.705 0.015 286.067);
+      --border: oklch(0.274 0.006 286.033);
+      --input: oklch(0.274 0.006 286.033);
+      --primary: oklch(0.985 0.002 247.839);
+      --primary-foreground: oklch(0.21 0.006 285.885);
+      --secondary: oklch(0.274 0.006 286.033);
+      --secondary-foreground: oklch(0.985 0.002 247.839);
+      --accent: oklch(0.491 0.27 292.581);
+      --accent-foreground: #ffffff;
+      --destructive: oklch(0.505 0.213 27.518);
+      --destructive-foreground: #ffffff;
+      --ring: oklch(0.705 0.015 286.067);
+    }
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+  <!-- Navigation -->
+  <nav class="border-b sticky top-0 z-50" style="border-color: var(--border); background-color: var(--background);">
+    <div class="container mx-auto px-6 lg:px-8">
+      <div class="flex h-14 items-center justify-between">
+        <a href="index.html" class="text-sm font-medium" style="color: var(--foreground);">Effectful Design System</a>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="typography.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Typography</a>
+          <a href="colors.html" class="text-sm" style="color: var(--foreground);">Colors</a>
+          <a href="spacing.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Spacing</a>
+          <a href="border-radius.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Border Radius</a>
+          <a href="layout-system.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Layout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumb -->
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <a href="index.html" class="inline-flex items-center gap-2 text-sm transition-colors" style="color: var(--muted-foreground);">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Foundations
+    </a>
+  </div>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+    <div class="max-w-5xl">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Colors</h1>
+      <p class="text-lg mb-16 leading-relaxed max-w-3xl" style="color: var(--muted-foreground);">
+        A comprehensive color system built on semantic tokens and a flexible palette. Designed for accessibility, dark mode support, and consistent application across all interfaces.
+      </p>
+      <div class="mb-20" style="border-top: 1px solid var(--border);"></div>
+
+      <!-- Semantic Tokens -->
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Semantic Tokens</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Semantic tokens abstract raw color values into meaningful, context-aware variables. They automatically adapt between light and dark themes.</p>
+
+        <h3 class="text-lg font-semibold mb-4">Surfaces &amp; Structure</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+          <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);"><div class="h-16" style="background-color: var(--background); border-bottom: 1px solid var(--border);"></div><div class="p-3"><p class="text-sm font-medium">background</p><p class="text-xs" style="color: var(--muted-foreground);">Page background</p></div></div>
+          <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);"><div class="h-16" style="background-color: var(--card); border-bottom: 1px solid var(--border);"></div><div class="p-3"><p class="text-sm font-medium">card</p><p class="text-xs" style="color: var(--muted-foreground);">Card surfaces</p></div></div>
+          <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);"><div class="h-16" style="background-color: var(--muted); border-bottom: 1px solid var(--border);"></div><div class="p-3"><p class="text-sm font-medium">muted</p><p class="text-xs" style="color: var(--muted-foreground);">Subtle backgrounds</p></div></div>
+          <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);"><div class="h-16" style="background-color: var(--border); border-bottom: 1px solid var(--border);"></div><div class="p-3"><p class="text-sm font-medium">border</p><p class="text-xs" style="color: var(--muted-foreground);">Dividers &amp; borders</p></div></div>
+          <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);"><div class="h-16" style="background-color: var(--input); border-bottom: 1px solid var(--border);"></div><div class="p-3"><p class="text-sm font-medium">input</p><p class="text-xs" style="color: var(--muted-foreground);">Form input borders</p></div></div>
+          <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);"><div class="h-16" style="background-color: var(--ring); border-bottom: 1px solid var(--border);"></div><div class="p-3"><p class="text-sm font-medium">ring</p><p class="text-xs" style="color: var(--muted-foreground);">Focus rings</p></div></div>
+        </div>
+
+        <h3 class="text-lg font-semibold mb-4">Content &amp; Actions</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+          <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);"><div class="h-16" style="background-color: var(--foreground); border-bottom: 1px solid var(--border);"></div><div class="p-3"><p class="text-sm font-medium">foreground</p><p class="text-xs" style="color: var(--muted-foreground);">Primary text</p></div></div>
+          <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);"><div class="h-16" style="background-color: var(--muted-foreground); border-bottom: 1px solid var(--border);"></div><div class="p-3"><p class="text-sm font-medium">muted-foreground</p><p class="text-xs" style="color: var(--muted-foreground);">Secondary text</p></div></div>
+          <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);"><div class="h-16" style="background-color: var(--primary); border-bottom: 1px solid var(--border);"></div><div class="p-3"><p class="text-sm font-medium">primary</p><p class="text-xs" style="color: var(--muted-foreground);">Primary buttons</p></div></div>
+          <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);"><div class="h-16" style="background-color: var(--secondary); border-bottom: 1px solid var(--border);"></div><div class="p-3"><p class="text-sm font-medium">secondary</p><p class="text-xs" style="color: var(--muted-foreground);">Secondary actions</p></div></div>
+          <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);"><div class="h-16" style="background-color: var(--accent); border-bottom: 1px solid var(--border);"></div><div class="p-3"><p class="text-sm font-medium">accent</p><p class="text-xs" style="color: var(--muted-foreground);">Accent / brand</p></div></div>
+          <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);"><div class="h-16" style="background-color: var(--destructive); border-bottom: 1px solid var(--border);"></div><div class="p-3"><p class="text-sm font-medium">destructive</p><p class="text-xs" style="color: var(--muted-foreground);">Error / danger</p></div></div>
+        </div>
+      </section>
+
+      <!-- Dark Mode -->
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Dark Mode</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Semantic tokens automatically adapt between light and dark themes.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);"><div class="p-4 font-medium text-sm" style="border-bottom: 1px solid var(--border);">Light Theme</div><div class="p-6" style="background-color: oklch(0.985 0.002 247.839); color: oklch(0.141 0.005 285.823);"><div class="rounded-lg border p-4 mb-3" style="background: #ffffff; border-color: oklch(0.92 0.004 286.32);"><p class="font-medium text-sm mb-1">Card Title</p><p class="text-xs" style="color: oklch(0.552 0.016 285.938);">Supporting text in muted foreground</p></div><div class="flex gap-2"><button class="px-3 py-1.5 rounded-md text-xs font-medium" style="background-color: oklch(0.21 0.006 285.885); color: oklch(0.985 0.002 247.839);">Primary</button><button class="px-3 py-1.5 rounded-md text-xs font-medium" style="background-color: oklch(0.967 0.001 286.375); color: oklch(0.21 0.006 285.885);">Secondary</button><button class="px-3 py-1.5 rounded-md text-xs font-medium" style="background-color: oklch(0.541 0.281 293.009); color: #ffffff;">Accent</button></div></div></div>
+          <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);"><div class="p-4 font-medium text-sm" style="border-bottom: 1px solid var(--border);">Dark Theme</div><div class="p-6" style="background-color: oklch(0.141 0.005 285.823); color: oklch(0.985 0.002 247.839);"><div class="rounded-lg border p-4 mb-3" style="background: oklch(0.21 0.006 285.885); border-color: oklch(0.274 0.006 286.033);"><p class="font-medium text-sm mb-1">Card Title</p><p class="text-xs" style="color: oklch(0.705 0.015 286.067);">Supporting text in muted foreground</p></div><div class="flex gap-2"><button class="px-3 py-1.5 rounded-md text-xs font-medium" style="background-color: oklch(0.985 0.002 247.839); color: oklch(0.21 0.006 285.885);">Primary</button><button class="px-3 py-1.5 rounded-md text-xs font-medium" style="background-color: oklch(0.274 0.006 286.033); color: oklch(0.985 0.002 247.839);">Secondary</button><button class="px-3 py-1.5 rounded-md text-xs font-medium" style="background-color: oklch(0.491 0.27 292.581); color: #ffffff;">Accent</button></div></div></div>
+        </div>
+      </section>
+
+      <!-- Color Palette -->
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Color Palette</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">The full color palette provides a range of shades for each color scale.</p>
+
+        <h3 class="text-lg font-semibold mb-4">Zinc</h3>
+        <div class="grid grid-cols-11 gap-2 mb-8">
+          <div><div class="h-12 rounded-md bg-zinc-50"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">50</p></div>
+          <div><div class="h-12 rounded-md bg-zinc-100"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">100</p></div>
+          <div><div class="h-12 rounded-md bg-zinc-200"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">200</p></div>
+          <div><div class="h-12 rounded-md bg-zinc-300"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">300</p></div>
+          <div><div class="h-12 rounded-md bg-zinc-400"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">400</p></div>
+          <div><div class="h-12 rounded-md bg-zinc-500"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">500</p></div>
+          <div><div class="h-12 rounded-md bg-zinc-600"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">600</p></div>
+          <div><div class="h-12 rounded-md bg-zinc-700"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">700</p></div>
+          <div><div class="h-12 rounded-md bg-zinc-800"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">800</p></div>
+          <div><div class="h-12 rounded-md bg-zinc-900"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">900</p></div>
+          <div><div class="h-12 rounded-md bg-zinc-950"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">950</p></div>
+        </div>
+
+        <h3 class="text-lg font-semibold mb-4">Violet</h3>
+        <div class="grid grid-cols-11 gap-2 mb-8">
+          <div><div class="h-12 rounded-md bg-violet-50"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">50</p></div>
+          <div><div class="h-12 rounded-md bg-violet-100"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">100</p></div>
+          <div><div class="h-12 rounded-md bg-violet-200"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">200</p></div>
+          <div><div class="h-12 rounded-md bg-violet-300"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">300</p></div>
+          <div><div class="h-12 rounded-md bg-violet-400"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">400</p></div>
+          <div><div class="h-12 rounded-md bg-violet-500"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">500</p></div>
+          <div><div class="h-12 rounded-md bg-violet-600"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">600</p></div>
+          <div><div class="h-12 rounded-md bg-violet-700"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">700</p></div>
+          <div><div class="h-12 rounded-md bg-violet-800"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">800</p></div>
+          <div><div class="h-12 rounded-md bg-violet-900"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">900</p></div>
+          <div><div class="h-12 rounded-md bg-violet-950"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">950</p></div>
+        </div>
+
+        <h3 class="text-lg font-semibold mb-4">Blue</h3>
+        <div class="grid grid-cols-11 gap-2 mb-8">
+          <div><div class="h-12 rounded-md bg-blue-50"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">50</p></div><div><div class="h-12 rounded-md bg-blue-100"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">100</p></div><div><div class="h-12 rounded-md bg-blue-200"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">200</p></div><div><div class="h-12 rounded-md bg-blue-300"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">300</p></div><div><div class="h-12 rounded-md bg-blue-400"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">400</p></div><div><div class="h-12 rounded-md bg-blue-500"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">500</p></div><div><div class="h-12 rounded-md bg-blue-600"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">600</p></div><div><div class="h-12 rounded-md bg-blue-700"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">700</p></div><div><div class="h-12 rounded-md bg-blue-800"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">800</p></div><div><div class="h-12 rounded-md bg-blue-900"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">900</p></div><div><div class="h-12 rounded-md bg-blue-950"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">950</p></div>
+        </div>
+
+        <h3 class="text-lg font-semibold mb-4">Red</h3>
+        <div class="grid grid-cols-11 gap-2 mb-8">
+          <div><div class="h-12 rounded-md bg-red-50"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">50</p></div><div><div class="h-12 rounded-md bg-red-100"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">100</p></div><div><div class="h-12 rounded-md bg-red-200"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">200</p></div><div><div class="h-12 rounded-md bg-red-300"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">300</p></div><div><div class="h-12 rounded-md bg-red-400"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">400</p></div><div><div class="h-12 rounded-md bg-red-500"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">500</p></div><div><div class="h-12 rounded-md bg-red-600"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">600</p></div><div><div class="h-12 rounded-md bg-red-700"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">700</p></div><div><div class="h-12 rounded-md bg-red-800"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">800</p></div><div><div class="h-12 rounded-md bg-red-900"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">900</p></div><div><div class="h-12 rounded-md bg-red-950"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">950</p></div>
+        </div>
+
+        <h3 class="text-lg font-semibold mb-4">Amber</h3>
+        <div class="grid grid-cols-11 gap-2 mb-8">
+          <div><div class="h-12 rounded-md bg-amber-50"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">50</p></div><div><div class="h-12 rounded-md bg-amber-100"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">100</p></div><div><div class="h-12 rounded-md bg-amber-200"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">200</p></div><div><div class="h-12 rounded-md bg-amber-300"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">300</p></div><div><div class="h-12 rounded-md bg-amber-400"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">400</p></div><div><div class="h-12 rounded-md bg-amber-500"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">500</p></div><div><div class="h-12 rounded-md bg-amber-600"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">600</p></div><div><div class="h-12 rounded-md bg-amber-700"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">700</p></div><div><div class="h-12 rounded-md bg-amber-800"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">800</p></div><div><div class="h-12 rounded-md bg-amber-900"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">900</p></div><div><div class="h-12 rounded-md bg-amber-950"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">950</p></div>
+        </div>
+
+        <h3 class="text-lg font-semibold mb-4">Green</h3>
+        <div class="grid grid-cols-11 gap-2 mb-8">
+          <div><div class="h-12 rounded-md bg-green-50"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">50</p></div><div><div class="h-12 rounded-md bg-green-100"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">100</p></div><div><div class="h-12 rounded-md bg-green-200"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">200</p></div><div><div class="h-12 rounded-md bg-green-300"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">300</p></div><div><div class="h-12 rounded-md bg-green-400"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">400</p></div><div><div class="h-12 rounded-md bg-green-500"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">500</p></div><div><div class="h-12 rounded-md bg-green-600"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">600</p></div><div><div class="h-12 rounded-md bg-green-700"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">700</p></div><div><div class="h-12 rounded-md bg-green-800"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">800</p></div><div><div class="h-12 rounded-md bg-green-900"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">900</p></div><div><div class="h-12 rounded-md bg-green-950"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">950</p></div>
+        </div>
+
+        <h3 class="text-lg font-semibold mb-4">Teal</h3>
+        <div class="grid grid-cols-11 gap-2 mb-8">
+          <div><div class="h-12 rounded-md bg-teal-50"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">50</p></div><div><div class="h-12 rounded-md bg-teal-100"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">100</p></div><div><div class="h-12 rounded-md bg-teal-200"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">200</p></div><div><div class="h-12 rounded-md bg-teal-300"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">300</p></div><div><div class="h-12 rounded-md bg-teal-400"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">400</p></div><div><div class="h-12 rounded-md bg-teal-500"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">500</p></div><div><div class="h-12 rounded-md bg-teal-600"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">600</p></div><div><div class="h-12 rounded-md bg-teal-700"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">700</p></div><div><div class="h-12 rounded-md bg-teal-800"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">800</p></div><div><div class="h-12 rounded-md bg-teal-900"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">900</p></div><div><div class="h-12 rounded-md bg-teal-950"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">950</p></div>
+        </div>
+
+        <h3 class="text-lg font-semibold mb-4">Purple</h3>
+        <div class="grid grid-cols-11 gap-2 mb-8">
+          <div><div class="h-12 rounded-md bg-purple-50"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">50</p></div><div><div class="h-12 rounded-md bg-purple-100"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">100</p></div><div><div class="h-12 rounded-md bg-purple-200"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">200</p></div><div><div class="h-12 rounded-md bg-purple-300"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">300</p></div><div><div class="h-12 rounded-md bg-purple-400"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">400</p></div><div><div class="h-12 rounded-md bg-purple-500"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">500</p></div><div><div class="h-12 rounded-md bg-purple-600"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">600</p></div><div><div class="h-12 rounded-md bg-purple-700"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">700</p></div><div><div class="h-12 rounded-md bg-purple-800"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">800</p></div><div><div class="h-12 rounded-md bg-purple-900"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">900</p></div><div><div class="h-12 rounded-md bg-purple-950"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">950</p></div>
+        </div>
+
+        <h3 class="text-lg font-semibold mb-4">Pink</h3>
+        <div class="grid grid-cols-11 gap-2 mb-8">
+          <div><div class="h-12 rounded-md bg-pink-50"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">50</p></div><div><div class="h-12 rounded-md bg-pink-100"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">100</p></div><div><div class="h-12 rounded-md bg-pink-200"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">200</p></div><div><div class="h-12 rounded-md bg-pink-300"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">300</p></div><div><div class="h-12 rounded-md bg-pink-400"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">400</p></div><div><div class="h-12 rounded-md bg-pink-500"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">500</p></div><div><div class="h-12 rounded-md bg-pink-600"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">600</p></div><div><div class="h-12 rounded-md bg-pink-700"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">700</p></div><div><div class="h-12 rounded-md bg-pink-800"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">800</p></div><div><div class="h-12 rounded-md bg-pink-900"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">900</p></div><div><div class="h-12 rounded-md bg-pink-950"></div><p class="text-xs mt-1 text-center" style="color: var(--muted-foreground);">950</p></div>
+        </div>
+      </section>
+
+      <!-- Accessibility -->
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Accessibility</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">All color combinations must meet WCAG 2.1 contrast ratio requirements.</p>
+        <h4 class="text-sm font-medium uppercase tracking-wide mb-4" style="color: var(--muted-foreground);">Contrast Requirements</h4>
+        <div class="rounded-lg border overflow-hidden mb-8" style="border-color: var(--border);">
+          <table class="w-full text-sm">
+            <thead><tr style="border-bottom: 1px solid var(--border); background-color: var(--muted);"><th class="text-left p-3 font-medium">Level</th><th class="text-left p-3 font-medium">Ratio</th><th class="text-left p-3 font-medium">Use Case</th></tr></thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">AA Normal</td><td class="p-3 font-mono">4.5:1</td><td class="p-3" style="color: var(--muted-foreground);">Body text, labels</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">AA Large</td><td class="p-3 font-mono">3:1</td><td class="p-3" style="color: var(--muted-foreground);">Headings (18px+ or 14px+ bold)</td></tr>
+              <tr><td class="p-3">AAA Normal</td><td class="p-3 font-mono">7:1</td><td class="p-3" style="color: var(--muted-foreground);">Enhanced accessibility</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <h4 class="text-sm font-medium uppercase tracking-wide mb-4" style="color: var(--muted-foreground);">Recommended Combinations</h4>
+        <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);">
+          <table class="w-full text-sm">
+            <thead><tr style="border-bottom: 1px solid var(--border); background-color: var(--muted);"><th class="text-left p-3 font-medium">Combination</th><th class="text-left p-3 font-medium">Usage</th><th class="text-left p-3 font-medium">Level</th></tr></thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">foreground on background</td><td class="p-3" style="color: var(--muted-foreground);">Primary content</td><td class="p-3"><span class="px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">AAA</span></td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">muted-foreground on background</td><td class="p-3" style="color: var(--muted-foreground);">Secondary content</td><td class="p-3"><span class="px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">AA</span></td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">primary-foreground on primary</td><td class="p-3" style="color: var(--muted-foreground);">Primary buttons</td><td class="p-3"><span class="px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">AAA</span></td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">accent-foreground on accent</td><td class="p-3" style="color: var(--muted-foreground);">Accent elements</td><td class="p-3"><span class="px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">AA</span></td></tr>
+              <tr><td class="p-3">destructive-foreground on destructive</td><td class="p-3" style="color: var(--muted-foreground);">Error states</td><td class="p-3"><span class="px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">AA</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Best Practices -->
+      <section class="pt-12 mb-20" style="border-top: 1px solid var(--border);">
+        <h2 class="text-2xl font-bold mb-6">Best Practices</h2>
+        <ul class="list-disc pl-5 space-y-3 text-sm" style="color: var(--muted-foreground);">
+          <li><strong class="font-medium" style="color: var(--foreground);">Use semantic tokens first.</strong> Only reach for raw palette values when building custom components that need specific shade control.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Test in both themes.</strong> Always verify color choices render well in both light and dark mode.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Don't rely on color alone.</strong> Pair color indicators with icons, text, or patterns for users with color vision deficiencies.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Maintain consistent meaning.</strong> Red for errors, amber for warnings, green for success &mdash; keep these associations stable.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Check contrast ratios.</strong> Use browser dev tools or accessibility checkers to verify WCAG compliance.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Use opacity for layering.</strong> Prefer <code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">bg-background/80</code> over separate color definitions for overlays.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

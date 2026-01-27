@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Border Radius – Effectful Design System</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          colors: {
+            background: 'var(--background)',
+            foreground: 'var(--foreground)',
+            card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+            muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+            border: 'var(--border)',
+            input: 'var(--input)',
+            primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+            secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+            accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+            destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
+            ring: 'var(--ring)',
+          },
+          borderColor: { DEFAULT: 'var(--border)' },
+        },
+      },
+    }
+  </script>
+  <style>
+    :root { --background: oklch(0.985 0.002 247.839); --foreground: oklch(0.141 0.005 285.823); --card: #ffffff; --card-foreground: oklch(0.141 0.005 285.823); --muted: oklch(0.967 0.001 286.375); --muted-foreground: oklch(0.552 0.016 285.938); --border: oklch(0.92 0.004 286.32); --input: oklch(0.92 0.004 286.32); --primary: oklch(0.21 0.006 285.885); --primary-foreground: oklch(0.985 0.002 247.839); --secondary: oklch(0.967 0.001 286.375); --secondary-foreground: oklch(0.21 0.006 285.885); --accent: oklch(0.541 0.281 293.009); --accent-foreground: #ffffff; --destructive: oklch(0.505 0.213 27.518); --destructive-foreground: #ffffff; --ring: oklch(0.552 0.016 285.938); --radius: 0.5rem; }
+    .dark { --background: oklch(0.141 0.005 285.823); --foreground: oklch(0.985 0.002 247.839); --card: oklch(0.21 0.006 285.885); --card-foreground: oklch(0.985 0.002 247.839); --muted: oklch(0.274 0.006 286.033); --muted-foreground: oklch(0.705 0.015 286.067); --border: oklch(0.274 0.006 286.033); --input: oklch(0.274 0.006 286.033); --primary: oklch(0.985 0.002 247.839); --primary-foreground: oklch(0.21 0.006 285.885); --secondary: oklch(0.274 0.006 286.033); --secondary-foreground: oklch(0.985 0.002 247.839); --accent: oklch(0.491 0.27 292.581); --accent-foreground: #ffffff; --destructive: oklch(0.505 0.213 27.518); --destructive-foreground: #ffffff; --ring: oklch(0.705 0.015 286.067); }
+    body { background-color: var(--background); color: var(--foreground); font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+  </style>
+</head>
+<body class="min-h-screen">
+  <nav class="border-b sticky top-0 z-50" style="border-color: var(--border); background-color: var(--background);">
+    <div class="container mx-auto px-6 lg:px-8">
+      <div class="flex h-14 items-center justify-between">
+        <a href="index.html" class="text-sm font-medium" style="color: var(--foreground);">Effectful Design System</a>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="typography.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Typography</a>
+          <a href="colors.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Colors</a>
+          <a href="spacing.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Spacing</a>
+          <a href="border-radius.html" class="text-sm" style="color: var(--foreground);">Border Radius</a>
+          <a href="layout-system.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Layout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <a href="index.html" class="inline-flex items-center gap-2 text-sm transition-colors" style="color: var(--muted-foreground);">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Foundations
+    </a>
+  </div>
+
+  <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+    <div class="max-w-5xl">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Border Radius</h1>
+      <p class="text-lg mb-16 leading-relaxed max-w-3xl" style="color: var(--muted-foreground);">Border radius values define the roundness of corners across components. Consistent radius usage creates a cohesive, polished feel throughout the interface.</p>
+      <div class="mb-20" style="border-top: 1px solid var(--border);"></div>
+
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Radius Scale</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">The radius scale provides a range from sharp corners to fully rounded elements.</p>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded-none"></div><p class="text-sm font-medium">none</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">0px</p></div>
+          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded-sm"></div><p class="text-sm font-medium">sm</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">2px</p></div>
+          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded"></div><p class="text-sm font-medium">DEFAULT</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">4px</p></div>
+          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded-md"></div><p class="text-sm font-medium">md</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">6px</p></div>
+          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded-lg"></div><p class="text-sm font-medium">lg</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">8px</p></div>
+          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded-xl"></div><p class="text-sm font-medium">xl</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">12px</p></div>
+          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded-2xl"></div><p class="text-sm font-medium">2xl</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">16px</p></div>
+          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded-3xl"></div><p class="text-sm font-medium">3xl</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">24px</p></div>
+          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded-full"></div><p class="text-sm font-medium">full</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">9999px</p></div>
+        </div>
+      </section>
+
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Usage by Component</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Recommended radius values for different component types.</p>
+        <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);">
+          <table class="w-full text-sm">
+            <thead><tr style="border-bottom: 1px solid var(--border); background-color: var(--muted);"><th class="text-left p-3 font-medium">Component</th><th class="text-left p-3 font-medium">Radius</th><th class="text-left p-3 font-medium">Class</th></tr></thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Buttons</td><td class="p-3" style="color: var(--muted-foreground);">6px</td><td class="p-3 font-mono">rounded-md</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Inputs</td><td class="p-3" style="color: var(--muted-foreground);">6px</td><td class="p-3 font-mono">rounded-md</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Cards</td><td class="p-3" style="color: var(--muted-foreground);">8px</td><td class="p-3 font-mono">rounded-lg</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Modals / Dialogs</td><td class="p-3" style="color: var(--muted-foreground);">12px</td><td class="p-3 font-mono">rounded-xl</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Dropdowns</td><td class="p-3" style="color: var(--muted-foreground);">6px</td><td class="p-3 font-mono">rounded-md</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Tooltips</td><td class="p-3" style="color: var(--muted-foreground);">6px</td><td class="p-3 font-mono">rounded-md</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Badges</td><td class="p-3" style="color: var(--muted-foreground);">9999px</td><td class="p-3 font-mono">rounded-full</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Avatars</td><td class="p-3" style="color: var(--muted-foreground);">9999px</td><td class="p-3 font-mono">rounded-full</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Tags / Chips</td><td class="p-3" style="color: var(--muted-foreground);">9999px</td><td class="p-3 font-mono">rounded-full</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Toggle / Switch</td><td class="p-3" style="color: var(--muted-foreground);">9999px</td><td class="p-3 font-mono">rounded-full</td></tr>
+              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Color swatches</td><td class="p-3" style="color: var(--muted-foreground);">6px</td><td class="p-3 font-mono">rounded-md</td></tr>
+              <tr><td class="p-3">Tables</td><td class="p-3" style="color: var(--muted-foreground);">8px</td><td class="p-3 font-mono">rounded-lg</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mb-20">
+        <h2 class="text-2xl font-bold mb-6">Visual Examples</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">See how different radius values look when applied to real UI components.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <h3 class="text-lg font-semibold mb-4">Button Variants</h3>
+            <div class="flex flex-wrap gap-3">
+              <button class="px-4 py-2 text-sm font-medium text-white rounded-none" style="background-color: var(--primary);">rounded-none</button>
+              <button class="px-4 py-2 text-sm font-medium text-white rounded-sm" style="background-color: var(--primary);">rounded-sm</button>
+              <button class="px-4 py-2 text-sm font-medium text-white rounded-md" style="background-color: var(--primary);">rounded-md</button>
+              <button class="px-4 py-2 text-sm font-medium text-white rounded-lg" style="background-color: var(--primary);">rounded-lg</button>
+              <button class="px-4 py-2 text-sm font-medium text-white rounded-full" style="background-color: var(--primary);">rounded-full</button>
+            </div>
+          </div>
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <h3 class="text-lg font-semibold mb-4">Form Elements</h3>
+            <div class="space-y-3">
+              <input type="text" placeholder="rounded-md input" class="w-full px-3 py-2 rounded-md border text-sm" style="border-color: var(--input); background-color: var(--background);">
+              <select class="w-full px-3 py-2 rounded-md border text-sm" style="border-color: var(--input); background-color: var(--background);"><option>rounded-md select</option></select>
+              <textarea placeholder="rounded-md textarea" rows="2" class="w-full px-3 py-2 rounded-md border text-sm" style="border-color: var(--input); background-color: var(--background);"></textarea>
+            </div>
+          </div>
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <h3 class="text-lg font-semibold mb-4">Cards &amp; Containers</h3>
+            <div class="space-y-3">
+              <div class="rounded-lg border p-4" style="border-color: var(--border);"><p class="text-sm font-medium">rounded-lg card</p><p class="text-xs" style="color: var(--muted-foreground);">Standard card radius</p></div>
+              <div class="rounded-xl border p-4" style="border-color: var(--border);"><p class="text-sm font-medium">rounded-xl dialog</p><p class="text-xs" style="color: var(--muted-foreground);">Modal/dialog radius</p></div>
+            </div>
+          </div>
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <h3 class="text-lg font-semibold mb-4">Badges &amp; Avatars</h3>
+            <div class="flex items-center gap-4">
+              <div class="w-10 h-10 rounded-full bg-violet-500 flex items-center justify-center text-white text-sm font-medium">AB</div>
+              <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-medium">CD</div>
+              <span class="px-2.5 py-0.5 rounded-full bg-green-100 text-green-800 text-xs font-medium">Badge</span>
+              <span class="px-2.5 py-0.5 rounded-full bg-violet-100 text-violet-800 text-xs font-medium">Tag</span>
+              <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-xs font-medium">Status</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pt-12 mb-20" style="border-top: 1px solid var(--border);">
+        <h2 class="text-2xl font-bold mb-6">Best Practices</h2>
+        <ul class="list-disc pl-5 space-y-3 text-sm" style="color: var(--muted-foreground);">
+          <li><strong class="font-medium" style="color: var(--foreground);">Match nested radii.</strong> Inner elements should use a smaller radius than their container.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Use rounded-full sparingly.</strong> Reserve full rounding for avatars, badges, pills, and toggle controls.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Be consistent within groups.</strong> All buttons in a button group should share the same radius.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Consider the content.</strong> Larger containers benefit from larger radii; small, dense UI elements work better with smaller radii.</li>
+          <li><strong class="font-medium" style="color: var(--foreground);">Avoid mixing too many values.</strong> Stick to 2-3 radius values per component to maintain visual consistency.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
