@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Effectful Design System</title>
+  <title>Effectful Design Guidelines</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -23,9 +23,8 @@
             muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
             border: 'var(--border)',
             input: 'var(--input)',
-            primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+            primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)', text: 'var(--primary-text)' },
             secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
-            accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
             destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
             ring: 'var(--ring)',
           },
@@ -43,16 +42,15 @@
       --card: #ffffff;
       --card-foreground: oklch(0.141 0.005 285.823);
       --muted: oklch(0.967 0.001 286.375);
-      --muted-foreground: oklch(0.552 0.016 285.938);
+      --muted-foreground: oklch(0.50 0.016 285.938);
       --border: oklch(0.92 0.004 286.32);
       --input: oklch(0.92 0.004 286.32);
-      --primary: oklch(0.21 0.006 285.885);
-      --primary-foreground: oklch(0.985 0.002 247.839);
+      --primary: oklch(0.606 0.208 293);
+      --primary-foreground: #ffffff;
       --secondary: oklch(0.967 0.001 286.375);
       --secondary-foreground: oklch(0.21 0.006 285.885);
-      --accent: oklch(0.541 0.281 293.009);
-      --accent-foreground: #ffffff;
-      --destructive: oklch(0.505 0.213 27.518);
+      --primary-text: oklch(0.50 0.18 293);
+      --destructive: oklch(0.45 0.213 27.518);
       --destructive-foreground: #ffffff;
       --ring: oklch(0.552 0.016 285.938);
       --radius: 0.5rem;
@@ -66,13 +64,12 @@
       --muted-foreground: oklch(0.705 0.015 286.067);
       --border: oklch(0.274 0.006 286.033);
       --input: oklch(0.274 0.006 286.033);
-      --primary: oklch(0.985 0.002 247.839);
-      --primary-foreground: oklch(0.21 0.006 285.885);
+      --primary: oklch(0.606 0.208 293);
+      --primary-foreground: #ffffff;
       --secondary: oklch(0.274 0.006 286.033);
       --secondary-foreground: oklch(0.985 0.002 247.839);
-      --accent: oklch(0.491 0.27 292.581);
-      --accent-foreground: #ffffff;
-      --destructive: oklch(0.505 0.213 27.518);
+      --primary-text: oklch(0.72 0.15 293);
+      --destructive: oklch(0.45 0.213 27.518);
       --destructive-foreground: #ffffff;
       --ring: oklch(0.705 0.015 286.067);
     }
@@ -82,19 +79,42 @@
       font-family: 'Inter', system-ui, sans-serif;
     }
   </style>
+  <script>
+    if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
 </head>
 <body class="min-h-screen">
   <!-- Navigation -->
   <nav class="border-b sticky top-0 z-50" style="border-color: var(--border); background-color: var(--background);">
     <div class="container mx-auto px-6 lg:px-8">
       <div class="flex h-14 items-center justify-between">
-        <a href="index.html" class="text-sm font-medium" style="color: var(--foreground);">Effectful Design System</a>
+        <a href="index.html" class="text-sm font-medium" style="color: var(--foreground);">Effectful Design Guidelines</a>
         <div class="hidden md:flex items-center gap-8">
           <a href="typography.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Typography</a>
           <a href="colors.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Colors</a>
           <a href="spacing.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Spacing</a>
           <a href="border-radius.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Border Radius</a>
           <a href="layout-system.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Layout</a>
+        </div>
+        <div class="flex items-center gap-1">
+          <button id="theme-toggle" class="p-2 rounded-md transition-colors" style="color: var(--muted-foreground);" aria-label="Toggle theme">
+            <svg id="theme-sun" class="w-4 h-4 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            <svg id="theme-moon" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          </button>
+          <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden p-2 -mr-2" style="color: var(--foreground);" aria-label="Toggle menu">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
+      </div>
+      <div id="mobile-menu" class="hidden md:hidden pb-4 border-t" style="border-color: var(--border);">
+        <div class="flex flex-col gap-1 pt-3">
+          <a href="typography.html" class="text-sm py-2 px-2 rounded transition-colors" style="color: var(--muted-foreground);">Typography</a>
+          <a href="colors.html" class="text-sm py-2 px-2 rounded transition-colors" style="color: var(--muted-foreground);">Colors</a>
+          <a href="spacing.html" class="text-sm py-2 px-2 rounded transition-colors" style="color: var(--muted-foreground);">Spacing</a>
+          <a href="border-radius.html" class="text-sm py-2 px-2 rounded transition-colors" style="color: var(--muted-foreground);">Border Radius</a>
+          <a href="layout-system.html" class="text-sm py-2 px-2 rounded transition-colors" style="color: var(--muted-foreground);">Layout</a>
         </div>
       </div>
     </div>
@@ -103,68 +123,93 @@
   <!-- Main Content -->
   <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
     <div class="max-w-5xl">
-      <h1 class="text-4xl md:text-5xl font-bold mb-4">Design Foundations</h1>
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Design Guidelines</h1>
       <p class="text-lg mb-16 leading-relaxed max-w-3xl" style="color: var(--muted-foreground);">
-        Core design tokens and guidelines that power the Effectful Design System. These foundations ensure consistency and coherence across all interfaces.
+        Core design guidelines that to ensure consistency and coherence across all interfaces.
       </p>
-      <div class="mb-20" style="border-top: 1px solid var(--border);"></div>
+      <div class="mb-12" style="border-top: 1px solid var(--border);"></div>
 
-      <!-- Cards Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Cards -->
+      <div class="flex flex-wrap gap-6">
         <!-- Typography Card -->
-        <a href="typography.html" class="group block rounded-lg border p-6 transition-colors hover:border-accent" style="border-color: var(--border); background-color: var(--card);">
+        <a href="typography.html" class="group block rounded-lg border p-6 transition-colors hover:border-primary w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]" style="border-color: var(--border); background-color: var(--card);">
           <div class="mb-3 text-2xl">Aa</div>
-          <h2 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors" style="color: var(--card-foreground);">Typography</h2>
+          <h2 class="text-lg font-semibold mb-2 group-hover:text-primary transition-colors" style="color: var(--card-foreground);">Typography</h2>
           <p class="text-sm" style="color: var(--muted-foreground);">Type scale, font weights, line heights, letter spacing, and font family guidelines.</p>
         </a>
 
         <!-- Colors Card -->
-        <a href="colors.html" class="group block rounded-lg border p-6 transition-colors hover:border-accent" style="border-color: var(--border); background-color: var(--card);">
+        <a href="colors.html" class="group block rounded-lg border p-6 transition-colors hover:border-primary w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]" style="border-color: var(--border); background-color: var(--card);">
           <div class="mb-3 flex gap-1">
             <div class="w-4 h-4 rounded-full bg-violet-500"></div>
-            <div class="w-4 h-4 rounded-full bg-blue-500"></div>
-            <div class="w-4 h-4 rounded-full bg-teal-500"></div>
+            <div class="w-4 h-4 rounded-full bg-red-500"></div>
+            <div class="w-4 h-4 rounded-full bg-emerald-500"></div>
             <div class="w-4 h-4 rounded-full bg-amber-500"></div>
           </div>
-          <h2 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors" style="color: var(--card-foreground);">Colors</h2>
+          <h2 class="text-lg font-semibold mb-2 group-hover:text-primary transition-colors" style="color: var(--card-foreground);">Colors</h2>
           <p class="text-sm" style="color: var(--muted-foreground);">Semantic tokens, color palette, dark mode theming, and accessibility guidelines.</p>
         </a>
 
-        <!-- Spacing Card -->
-        <a href="spacing.html" class="group block rounded-lg border p-6 transition-colors hover:border-accent" style="border-color: var(--border); background-color: var(--card);">
-          <div class="mb-3 flex items-end gap-1">
-            <div class="w-2 h-2 rounded-sm bg-violet-500"></div>
-            <div class="w-2 h-4 rounded-sm bg-violet-500"></div>
-            <div class="w-2 h-6 rounded-sm bg-violet-500"></div>
-            <div class="w-2 h-8 rounded-sm bg-violet-500"></div>
-          </div>
-          <h2 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors" style="color: var(--card-foreground);">Spacing</h2>
-          <p class="text-sm" style="color: var(--muted-foreground);">Spacing scale, common usage patterns, and component spacing conventions.</p>
-        </a>
-
         <!-- Border Radius Card -->
-        <a href="border-radius.html" class="group block rounded-lg border p-6 transition-colors hover:border-accent" style="border-color: var(--border); background-color: var(--card);">
+        <a href="border-radius.html" class="group block rounded-lg border p-6 transition-colors hover:border-primary w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]" style="border-color: var(--border); background-color: var(--card);">
           <div class="mb-3 flex gap-2">
-            <div class="w-6 h-6 border-2 border-violet-500 rounded-none"></div>
-            <div class="w-6 h-6 border-2 border-violet-500 rounded-md"></div>
-            <div class="w-6 h-6 border-2 border-violet-500 rounded-full"></div>
+            <div class="w-6 h-6 border-2 border-zinc-400 rounded-none"></div>
+            <div class="w-6 h-6 border-2 border-zinc-400 rounded-md"></div>
+            <div class="w-6 h-6 border-2 border-zinc-400 rounded-full"></div>
           </div>
-          <h2 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors" style="color: var(--card-foreground);">Border Radius</h2>
+          <h2 class="text-lg font-semibold mb-2 group-hover:text-primary transition-colors" style="color: var(--card-foreground);">Border Radius</h2>
           <p class="text-sm" style="color: var(--muted-foreground);">Radius scale, component usage mappings, and visual examples.</p>
         </a>
 
-        <!-- Layout System Card -->
-        <a href="layout-system.html" class="group block rounded-lg border p-6 transition-colors hover:border-accent" style="border-color: var(--border); background-color: var(--card);">
-          <div class="mb-3 flex gap-1">
-            <div class="w-3 h-6 rounded-sm bg-violet-500/30"></div>
-            <div class="flex-1 h-6 rounded-sm bg-violet-500/50"></div>
-            <div class="w-5 h-6 rounded-sm bg-violet-500/30"></div>
+        <!-- Spacing Card -->
+        <a href="spacing.html" class="group block rounded-lg border p-6 transition-colors hover:border-primary w-full md:w-[calc(50%-12px)]" style="border-color: var(--border); background-color: var(--card);">
+          <div class="mb-3 flex items-end gap-1">
+            <div class="w-2 h-2 rounded-sm bg-zinc-400"></div>
+            <div class="w-2 h-4 rounded-sm bg-zinc-400"></div>
+            <div class="w-2 h-6 rounded-sm bg-zinc-400"></div>
+            <div class="w-2 h-8 rounded-sm bg-zinc-400"></div>
           </div>
-          <h2 class="text-lg font-semibold mb-2 group-hover:text-accent transition-colors" style="color: var(--card-foreground);">Layout System</h2>
+          <h2 class="text-lg font-semibold mb-2 group-hover:text-primary transition-colors" style="color: var(--card-foreground);">Spacing</h2>
+          <p class="text-sm" style="color: var(--muted-foreground);">Spacing scale, common usage patterns, and component spacing conventions.</p>
+        </a>
+
+        <!-- Layout System Card -->
+        <a href="layout-system.html" class="group block rounded-lg border p-6 transition-colors hover:border-primary w-full md:w-[calc(50%-12px)]" style="border-color: var(--border); background-color: var(--card);">
+          <div class="mb-3 flex gap-1">
+            <div class="w-3 h-6 rounded-sm bg-zinc-300"></div>
+            <div class="flex-1 h-6 rounded-sm bg-zinc-400"></div>
+            <div class="w-5 h-6 rounded-sm bg-zinc-300"></div>
+          </div>
+          <h2 class="text-lg font-semibold mb-2 group-hover:text-primary transition-colors" style="color: var(--card-foreground);">Layout System</h2>
           <p class="text-sm" style="color: var(--muted-foreground);">Breakpoints, containers, grid system, and responsive patterns.</p>
         </a>
       </div>
     </div>
   </main>
+
+  <!-- Footer -->
+  <footer class="border-t py-8 mt-8" style="border-color: var(--border);">
+    <div class="container mx-auto px-6 lg:px-8">
+      <p class="text-sm" style="color: var(--muted-foreground);">Effectful Design System</p>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      var toggle = document.getElementById('theme-toggle');
+      var sun = document.getElementById('theme-sun');
+      var moon = document.getElementById('theme-moon');
+      if (document.documentElement.classList.contains('dark')) {
+        sun.classList.remove('hidden');
+        moon.classList.add('hidden');
+      }
+      toggle.addEventListener('click', function() {
+        var isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        sun.classList.toggle('hidden', !isDark);
+        moon.classList.toggle('hidden', isDark);
+      });
+    })();
+  </script>
 </body>
 </html>

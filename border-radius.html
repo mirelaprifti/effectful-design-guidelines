@@ -23,9 +23,8 @@
             muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
             border: 'var(--border)',
             input: 'var(--input)',
-            primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+            primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)', text: 'var(--primary-text)' },
             secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
-            accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
             destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
             ring: 'var(--ring)',
           },
@@ -35,10 +34,15 @@
     }
   </script>
   <style>
-    :root { --background: oklch(0.985 0.002 247.839); --foreground: oklch(0.141 0.005 285.823); --card: #ffffff; --card-foreground: oklch(0.141 0.005 285.823); --muted: oklch(0.967 0.001 286.375); --muted-foreground: oklch(0.552 0.016 285.938); --border: oklch(0.92 0.004 286.32); --input: oklch(0.92 0.004 286.32); --primary: oklch(0.21 0.006 285.885); --primary-foreground: oklch(0.985 0.002 247.839); --secondary: oklch(0.967 0.001 286.375); --secondary-foreground: oklch(0.21 0.006 285.885); --accent: oklch(0.541 0.281 293.009); --accent-foreground: #ffffff; --destructive: oklch(0.505 0.213 27.518); --destructive-foreground: #ffffff; --ring: oklch(0.552 0.016 285.938); --radius: 0.5rem; }
-    .dark { --background: oklch(0.141 0.005 285.823); --foreground: oklch(0.985 0.002 247.839); --card: oklch(0.21 0.006 285.885); --card-foreground: oklch(0.985 0.002 247.839); --muted: oklch(0.274 0.006 286.033); --muted-foreground: oklch(0.705 0.015 286.067); --border: oklch(0.274 0.006 286.033); --input: oklch(0.274 0.006 286.033); --primary: oklch(0.985 0.002 247.839); --primary-foreground: oklch(0.21 0.006 285.885); --secondary: oklch(0.274 0.006 286.033); --secondary-foreground: oklch(0.985 0.002 247.839); --accent: oklch(0.491 0.27 292.581); --accent-foreground: #ffffff; --destructive: oklch(0.505 0.213 27.518); --destructive-foreground: #ffffff; --ring: oklch(0.705 0.015 286.067); }
+    :root { --background: oklch(0.985 0.002 247.839); --foreground: oklch(0.141 0.005 285.823); --card: #ffffff; --card-foreground: oklch(0.141 0.005 285.823); --muted: oklch(0.967 0.001 286.375); --muted-foreground: oklch(0.50 0.016 285.938); --border: oklch(0.92 0.004 286.32); --input: oklch(0.92 0.004 286.32); --primary: oklch(0.606 0.208 293); --primary-foreground: #ffffff; --secondary: oklch(0.967 0.001 286.375); --secondary-foreground: oklch(0.21 0.006 285.885); --primary-text: oklch(0.50 0.18 293); --destructive: oklch(0.45 0.213 27.518); --destructive-foreground: #ffffff; --ring: oklch(0.552 0.016 285.938); --radius: 0.5rem; }
+    .dark { --background: oklch(0.141 0.005 285.823); --foreground: oklch(0.985 0.002 247.839); --card: oklch(0.21 0.006 285.885); --card-foreground: oklch(0.985 0.002 247.839); --muted: oklch(0.274 0.006 286.033); --muted-foreground: oklch(0.705 0.015 286.067); --border: oklch(0.274 0.006 286.033); --input: oklch(0.274 0.006 286.033); --primary: oklch(0.606 0.208 293); --primary-foreground: #ffffff; --secondary: oklch(0.274 0.006 286.033); --secondary-foreground: oklch(0.985 0.002 247.839); --primary-text: oklch(0.72 0.15 293); --destructive: oklch(0.45 0.213 27.518); --destructive-foreground: #ffffff; --ring: oklch(0.705 0.015 286.067); }
     body { background-color: var(--background); color: var(--foreground); font-family: 'Inter', system-ui, sans-serif; }
   </style>
+  <script>
+    if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
 </head>
 <body class="min-h-screen">
   <nav class="border-b sticky top-0 z-50" style="border-color: var(--border); background-color: var(--background);">
@@ -51,6 +55,24 @@
           <a href="spacing.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Spacing</a>
           <a href="border-radius.html" class="text-sm" style="color: var(--foreground);">Border Radius</a>
           <a href="layout-system.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Layout</a>
+        </div>
+        <div class="flex items-center gap-1">
+          <button id="theme-toggle" class="p-2 rounded-md transition-colors" style="color: var(--muted-foreground);" aria-label="Toggle theme">
+            <svg id="theme-sun" class="w-4 h-4 hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+            <svg id="theme-moon" class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          </button>
+          <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden p-2 -mr-2" style="color: var(--foreground);" aria-label="Toggle menu">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
+      </div>
+      <div id="mobile-menu" class="hidden md:hidden pb-4 border-t" style="border-color: var(--border);">
+        <div class="flex flex-col gap-1 pt-3">
+          <a href="typography.html" class="text-sm py-2 px-2 rounded transition-colors" style="color: var(--muted-foreground);">Typography</a>
+          <a href="colors.html" class="text-sm py-2 px-2 rounded transition-colors" style="color: var(--muted-foreground);">Colors</a>
+          <a href="spacing.html" class="text-sm py-2 px-2 rounded transition-colors" style="color: var(--muted-foreground);">Spacing</a>
+          <a href="border-radius.html" class="text-sm py-2 px-2 rounded font-medium" style="color: var(--foreground);">Border Radius</a>
+          <a href="layout-system.html" class="text-sm py-2 px-2 rounded transition-colors" style="color: var(--muted-foreground);">Layout</a>
         </div>
       </div>
     </div>
@@ -66,102 +88,473 @@
   <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
     <div class="max-w-5xl">
       <h1 class="text-4xl md:text-5xl font-bold mb-4">Border Radius</h1>
-      <p class="text-lg mb-16 leading-relaxed max-w-3xl" style="color: var(--muted-foreground);">Border radius values define the roundness of corners across components. Consistent radius usage creates a cohesive, polished feel throughout the interface.</p>
-      <div class="mb-20" style="border-top: 1px solid var(--border);"></div>
+      <p class="text-lg mb-16 leading-relaxed max-w-3xl" style="color: var(--muted-foreground);">Maintain consistent radius values for similar UI elements to create visual harmony.</p>
+      <div class="mb-12" style="border-top: 1px solid var(--border);"></div>
 
-      <section class="mb-20">
+      <!-- Page Layout with Sidebar Navigation -->
+      <div class="lg:flex lg:gap-12">
+        <!-- Sticky Section Navigation (Desktop only) -->
+        <aside class="hidden lg:block lg:w-48 shrink-0">
+          <nav class="sticky top-20" id="section-nav">
+            <p class="text-xs font-medium uppercase tracking-wide mb-4" style="color: var(--muted-foreground);">On this page</p>
+            <ul class="space-y-2 text-sm">
+              <li><a href="#radius-scale" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Radius Scale</a></li>
+              <li><a href="#usage-by-component" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Usage by Component</a></li>
+              <li><a href="#nested-radius" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Nested Radius</a></li>
+              <li><a href="#radius-shadows" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Radius + Shadows</a></li>
+              <li><a href="#best-practices" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Best Practices</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 min-w-0">
+
+      <section id="radius-scale" class="mb-20 scroll-mt-24">
         <h2 class="text-2xl font-bold mb-6">Radius Scale</h2>
         <p class="text-sm mb-8" style="color: var(--muted-foreground);">The radius scale provides a range from sharp corners to fully rounded elements.</p>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded-none"></div><p class="text-sm font-medium">none</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">0px</p></div>
-          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded-sm"></div><p class="text-sm font-medium">sm</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">2px</p></div>
-          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded"></div><p class="text-sm font-medium">DEFAULT</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">4px</p></div>
-          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded-md"></div><p class="text-sm font-medium">md</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">6px</p></div>
-          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded-lg"></div><p class="text-sm font-medium">lg</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">8px</p></div>
-          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded-xl"></div><p class="text-sm font-medium">xl</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">12px</p></div>
-          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded-2xl"></div><p class="text-sm font-medium">2xl</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">16px</p></div>
-          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded-3xl"></div><p class="text-sm font-medium">3xl</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">24px</p></div>
-          <div class="text-center"><div class="w-20 h-20 mx-auto mb-3 border-2 border-violet-500 rounded-full"></div><p class="text-sm font-medium">full</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">9999px</p></div>
+        <div class="flex flex-wrap gap-6">
+          <div class="text-center w-[calc(50%-12px)] sm:w-[calc(33.333%-16px)] md:w-[calc(25%-18px)] lg:w-[calc(20%-19.2px)]"><div class="w-20 h-20 mx-auto mb-3 border-2 border-zinc-500 rounded-none"></div><p class="text-sm font-medium">none</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">0px</p></div>
+          <div class="text-center w-[calc(50%-12px)] sm:w-[calc(33.333%-16px)] md:w-[calc(25%-18px)] lg:w-[calc(20%-19.2px)]"><div class="w-20 h-20 mx-auto mb-3 border-2 border-zinc-500 rounded-sm"></div><p class="text-sm font-medium">sm</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">2px</p></div>
+          <div class="text-center w-[calc(50%-12px)] sm:w-[calc(33.333%-16px)] md:w-[calc(25%-18px)] lg:w-[calc(20%-19.2px)]"><div class="w-20 h-20 mx-auto mb-3 border-2 border-zinc-500 rounded"></div><p class="text-sm font-medium">DEFAULT</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">4px</p></div>
+          <div class="text-center w-[calc(50%-12px)] sm:w-[calc(33.333%-16px)] md:w-[calc(25%-18px)] lg:w-[calc(20%-19.2px)]"><div class="w-20 h-20 mx-auto mb-3 border-2 border-zinc-500 rounded-md"></div><p class="text-sm font-medium">md</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">6px</p></div>
+          <div class="text-center w-[calc(50%-12px)] sm:w-[calc(33.333%-16px)] md:w-[calc(25%-18px)] lg:w-[calc(20%-19.2px)]"><div class="w-20 h-20 mx-auto mb-3 border-2 border-zinc-500 rounded-lg"></div><p class="text-sm font-medium">lg</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">8px</p></div>
+          <div class="text-center w-[calc(50%-12px)] sm:w-[calc(33.333%-16px)] md:w-[calc(25%-18px)] lg:w-[calc(20%-19.2px)]"><div class="w-20 h-20 mx-auto mb-3 border-2 border-zinc-500 rounded-xl"></div><p class="text-sm font-medium">xl</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">12px</p></div>
+          <div class="text-center w-[calc(50%-12px)] sm:w-[calc(33.333%-16px)] md:w-[calc(25%-18px)] lg:w-[calc(20%-19.2px)]"><div class="w-20 h-20 mx-auto mb-3 border-2 border-zinc-500 rounded-2xl"></div><p class="text-sm font-medium">2xl</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">16px</p></div>
+          <div class="text-center w-[calc(50%-12px)] sm:w-[calc(33.333%-16px)] md:w-[calc(25%-18px)] lg:w-[calc(20%-19.2px)]"><div class="w-20 h-20 mx-auto mb-3 border-2 border-zinc-500 rounded-3xl"></div><p class="text-sm font-medium">3xl</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">24px</p></div>
+          <div class="text-center w-[calc(50%-12px)] sm:w-[calc(33.333%-16px)] md:w-[calc(25%-18px)] lg:w-[calc(20%-19.2px)]"><div class="w-20 h-20 mx-auto mb-3 border-2 border-zinc-500 rounded-full"></div><p class="text-sm font-medium">full</p><p class="text-xs font-mono" style="color: var(--muted-foreground);">9999px</p></div>
         </div>
       </section>
 
-      <section class="mb-20">
+      <section id="usage-by-component" class="mb-20 scroll-mt-24">
         <h2 class="text-2xl font-bold mb-6">Usage by Component</h2>
-        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Recommended radius values for different component types.</p>
-        <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);">
-          <table class="w-full text-sm">
-            <thead><tr style="border-bottom: 1px solid var(--border); background-color: var(--muted);"><th class="text-left p-3 font-medium">Component</th><th class="text-left p-3 font-medium">Radius</th><th class="text-left p-3 font-medium">Class</th></tr></thead>
-            <tbody>
-              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Buttons</td><td class="p-3" style="color: var(--muted-foreground);">6px</td><td class="p-3 font-mono">rounded-md</td></tr>
-              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Inputs</td><td class="p-3" style="color: var(--muted-foreground);">6px</td><td class="p-3 font-mono">rounded-md</td></tr>
-              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Cards</td><td class="p-3" style="color: var(--muted-foreground);">8px</td><td class="p-3 font-mono">rounded-lg</td></tr>
-              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Modals / Dialogs</td><td class="p-3" style="color: var(--muted-foreground);">12px</td><td class="p-3 font-mono">rounded-xl</td></tr>
-              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Dropdowns</td><td class="p-3" style="color: var(--muted-foreground);">6px</td><td class="p-3 font-mono">rounded-md</td></tr>
-              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Tooltips</td><td class="p-3" style="color: var(--muted-foreground);">6px</td><td class="p-3 font-mono">rounded-md</td></tr>
-              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Badges</td><td class="p-3" style="color: var(--muted-foreground);">9999px</td><td class="p-3 font-mono">rounded-full</td></tr>
-              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Avatars</td><td class="p-3" style="color: var(--muted-foreground);">9999px</td><td class="p-3 font-mono">rounded-full</td></tr>
-              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Tags / Chips</td><td class="p-3" style="color: var(--muted-foreground);">9999px</td><td class="p-3 font-mono">rounded-full</td></tr>
-              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Toggle / Switch</td><td class="p-3" style="color: var(--muted-foreground);">9999px</td><td class="p-3 font-mono">rounded-full</td></tr>
-              <tr style="border-bottom: 1px solid var(--border);"><td class="p-3">Color swatches</td><td class="p-3" style="color: var(--muted-foreground);">6px</td><td class="p-3 font-mono">rounded-md</td></tr>
-              <tr><td class="p-3">Tables</td><td class="p-3" style="color: var(--muted-foreground);">8px</td><td class="p-3 font-mono">rounded-lg</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Recommended radius values for different component types, with visual examples.</p>
 
-      <section class="mb-20">
-        <h2 class="text-2xl font-bold mb-6">Visual Examples</h2>
-        <p class="text-sm mb-8" style="color: var(--muted-foreground);">See how different radius values look when applied to real UI components.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          <!-- Buttons -->
           <div class="rounded-lg border p-6" style="border-color: var(--border);">
-            <h3 class="text-lg font-semibold mb-4">Button Variants</h3>
-            <div class="flex flex-wrap gap-3">
-              <button class="px-4 py-2 text-sm font-medium text-white rounded-none" style="background-color: var(--primary);">rounded-none</button>
-              <button class="px-4 py-2 text-sm font-medium text-white rounded-sm" style="background-color: var(--primary);">rounded-sm</button>
-              <button class="px-4 py-2 text-sm font-medium text-white rounded-md" style="background-color: var(--primary);">rounded-md</button>
-              <button class="px-4 py-2 text-sm font-medium text-white rounded-lg" style="background-color: var(--primary);">rounded-lg</button>
-              <button class="px-4 py-2 text-sm font-medium text-white rounded-full" style="background-color: var(--primary);">rounded-full</button>
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold">Buttons</h3>
+              <code class="text-xs px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">rounded-md (6px)</code>
+            </div>
+            <div class="flex flex-wrap gap-2">
+              <button class="px-4 py-2 text-sm font-medium text-white rounded-md" style="background-color: var(--primary);">Primary</button>
+              <button class="px-4 py-2 text-sm font-medium rounded-md" style="background-color: var(--secondary); color: var(--secondary-foreground);">Secondary</button>
+              <button class="px-4 py-2 text-sm font-medium rounded-md border" style="border-color: var(--border); background: transparent;">Outline</button>
             </div>
           </div>
+
+          <!-- Inputs -->
           <div class="rounded-lg border p-6" style="border-color: var(--border);">
-            <h3 class="text-lg font-semibold mb-4">Form Elements</h3>
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold">Inputs</h3>
+              <code class="text-xs px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">rounded-md (6px)</code>
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm font-medium">Email</label>
+              <input type="text" placeholder="you@example.com" class="w-full px-3 py-2 text-sm rounded-md" style="border: 1px solid var(--input); background-color: var(--background);">
+            </div>
+          </div>
+
+          <!-- Cards -->
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold">Cards</h3>
+              <code class="text-xs px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">rounded-lg (8px)</code>
+            </div>
+            <div class="rounded-lg border p-4" style="border-color: var(--border); background-color: var(--card);">
+              <p class="font-medium text-sm mb-1">Card Title</p>
+              <p class="text-xs mb-3" style="color: var(--muted-foreground);">Card description with supporting text.</p>
+              <a href="#" class="text-xs font-medium" style="color: var(--primary-text);">Learn more →</a>
+            </div>
+          </div>
+
+          <!-- Modals / Dialogs -->
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold">Modals / Dialogs</h3>
+              <code class="text-xs px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">rounded-xl (12px)</code>
+            </div>
+            <div class="rounded-xl border shadow-lg p-4" style="border-color: var(--border); background-color: var(--card);">
+              <div class="flex justify-between items-center mb-2">
+                <p class="font-medium text-sm">Confirm Action</p>
+                <button class="text-xs p-1 rounded hover:bg-muted" style="color: var(--muted-foreground);">✕</button>
+              </div>
+              <p class="text-xs mb-3" style="color: var(--muted-foreground);">Are you sure you want to continue?</p>
+              <div class="flex gap-2 justify-end">
+                <button class="px-3 py-1.5 text-xs font-medium rounded-md" style="background-color: var(--secondary); color: var(--secondary-foreground);">Cancel</button>
+                <button class="px-3 py-1.5 text-xs font-medium text-white rounded-md" style="background-color: var(--primary);">Confirm</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dropdowns -->
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold">Dropdowns</h3>
+              <code class="text-xs px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">rounded-md (6px)</code>
+            </div>
+            <div class="relative inline-block">
+              <button class="px-3 py-2 text-sm font-medium rounded-md border flex items-center gap-2" style="border-color: var(--border); background-color: var(--card);">
+                Options
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+              <div class="absolute top-full left-0 mt-1 w-40 rounded-md border shadow-md py-1" style="border-color: var(--border); background-color: var(--card);">
+                <div class="px-3 py-2 text-sm" style="background-color: var(--muted);">Edit</div>
+                <div class="px-3 py-2 text-sm">Duplicate</div>
+                <div class="px-3 py-2 text-sm" style="color: var(--destructive);">Delete</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tooltips -->
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold">Tooltips</h3>
+              <code class="text-xs px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">rounded-md (6px)</code>
+            </div>
+            <div class="relative inline-block pt-10">
+              <div class="absolute -top-2 left-1/2 -translate-x-1/2 px-3 py-1.5 text-xs text-white rounded-md whitespace-nowrap" style="background-color: var(--foreground);">
+                Tooltip text
+                <div class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent" style="border-top-color: var(--foreground);"></div>
+              </div>
+              <button class="px-4 py-2 text-sm font-medium text-white rounded-md" style="background-color: var(--primary);">Hover me</button>
+            </div>
+          </div>
+
+          <!-- Badges & Tags -->
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold">Badges & Tags</h3>
+              <code class="text-xs px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">rounded-full (9999px)</code>
+            </div>
             <div class="space-y-3">
-              <input type="text" placeholder="rounded-md input" class="w-full px-3 py-2 rounded-md border text-sm" style="border-color: var(--input); background-color: var(--background);">
-              <select class="w-full px-3 py-2 rounded-md border text-sm" style="border-color: var(--input); background-color: var(--background);"><option>rounded-md select</option></select>
-              <textarea placeholder="rounded-md textarea" rows="2" class="w-full px-3 py-2 rounded-md border text-sm" style="border-color: var(--input); background-color: var(--background);"></textarea>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-emerald-100 text-emerald-700">Success</span>
+                <span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-amber-100 text-amber-700">Warning</span>
+                <span class="px-2.5 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-700">Error</span>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span class="inline-flex items-center gap-1 px-3 py-1 text-xs font-medium rounded-full" style="background-color: var(--muted);">
+                  React
+                  <button class="hover:text-foreground" style="color: var(--muted-foreground);">✕</button>
+                </span>
+                <span class="inline-flex items-center gap-1 px-3 py-1 text-xs font-medium rounded-full" style="background-color: var(--muted);">
+                  TypeScript
+                  <button class="hover:text-foreground" style="color: var(--muted-foreground);">✕</button>
+                </span>
+              </div>
             </div>
           </div>
+
+          <!-- Avatars -->
           <div class="rounded-lg border p-6" style="border-color: var(--border);">
-            <h3 class="text-lg font-semibold mb-4">Cards &amp; Containers</h3>
-            <div class="space-y-3">
-              <div class="rounded-lg border p-4" style="border-color: var(--border);"><p class="text-sm font-medium">rounded-lg card</p><p class="text-xs" style="color: var(--muted-foreground);">Standard card radius</p></div>
-              <div class="rounded-xl border p-4" style="border-color: var(--border);"><p class="text-sm font-medium">rounded-xl dialog</p><p class="text-xs" style="color: var(--muted-foreground);">Modal/dialog radius</p></div>
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold">Avatars</h3>
+              <code class="text-xs px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">rounded-full (9999px)</code>
+            </div>
+            <div class="flex -space-x-2">
+              <div class="w-10 h-10 rounded-full bg-violet-500 text-white flex items-center justify-center text-sm font-medium border-2 border-white">JD</div>
+              <div class="w-10 h-10 rounded-full bg-emerald-500 text-white flex items-center justify-center text-sm font-medium border-2 border-white">AK</div>
+              <div class="w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center text-sm font-medium border-2 border-white">MR</div>
+              <div class="w-10 h-10 rounded-full flex items-center justify-center text-xs font-medium border-2 border-white" style="background-color: var(--muted); color: var(--muted-foreground);">+3</div>
             </div>
           </div>
+
+          <!-- Toggle / Switch -->
           <div class="rounded-lg border p-6" style="border-color: var(--border);">
-            <h3 class="text-lg font-semibold mb-4">Badges &amp; Avatars</h3>
-            <div class="flex items-center gap-4">
-              <div class="w-10 h-10 rounded-full bg-violet-500 flex items-center justify-center text-white text-sm font-medium">AB</div>
-              <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-medium">CD</div>
-              <span class="px-2.5 py-0.5 rounded-full bg-green-100 text-green-800 text-xs font-medium">Badge</span>
-              <span class="px-2.5 py-0.5 rounded-full bg-violet-100 text-violet-800 text-xs font-medium">Tag</span>
-              <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-xs font-medium">Status</span>
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold">Toggle / Switch</h3>
+              <code class="text-xs px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">rounded-full (9999px)</code>
+            </div>
+            <div class="flex items-center gap-6">
+              <div class="flex items-center gap-2">
+                <div class="w-11 h-6 rounded-full p-0.5 cursor-pointer" style="background-color: var(--primary);">
+                  <div class="w-5 h-5 rounded-full bg-white shadow-sm transform translate-x-5"></div>
+                </div>
+                <span class="text-sm">On</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div class="w-11 h-6 rounded-full p-0.5 cursor-pointer" style="background-color: var(--muted);">
+                  <div class="w-5 h-5 rounded-full bg-white shadow-sm"></div>
+                </div>
+                <span class="text-sm">Off</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tables -->
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold">Tables</h3>
+              <code class="text-xs px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">rounded-lg (8px)</code>
+            </div>
+            <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);">
+              <table class="w-full text-xs">
+                <thead>
+                  <tr style="background-color: var(--muted);">
+                    <th class="text-left p-2 font-medium">Name</th>
+                    <th class="text-left p-2 font-medium">Status</th>
+                    <th class="text-right p-2 font-medium">Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="border-top: 1px solid var(--border);"><td class="p-2">John Doe</td><td class="p-2"><span class="text-emerald-600">Active</span></td><td class="p-2 text-right">$250</td></tr>
+                  <tr style="border-top: 1px solid var(--border);"><td class="p-2">Jane Smith</td><td class="p-2"><span class="text-amber-600">Pending</span></td><td class="p-2 text-right">$120</td></tr>
+                  <tr style="border-top: 1px solid var(--border);"><td class="p-2">Bob Wilson</td><td class="p-2"><span class="text-emerald-600">Active</span></td><td class="p-2 text-right">$340</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section id="nested-radius" class="mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-bold mb-6">Nested Radius</h2>
+        <p class="text-sm mb-4" style="color: var(--muted-foreground);">When nesting rounded elements, the inner radius should be smaller to maintain visual harmony. Use this formula:</p>
+        <div class="rounded-lg border p-4 mb-8 inline-block" style="border-color: var(--border); background-color: var(--muted);">
+          <code class="text-sm font-mono font-medium">inner radius = outer radius − padding</code>
+          <p class="text-xs mt-2" style="color: var(--muted-foreground);">When padding ≥ outer radius, use <code class="px-1 py-0.5 rounded text-xs" style="background-color: var(--card);">rounded-none</code> or <code class="px-1 py-0.5 rounded text-xs" style="background-color: var(--card);">rounded-sm</code></p>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+          <!-- Visual Example -->
+          <div class="flex-1 space-y-6">
+            <!-- Good Example -->
+            <div class="rounded-lg border p-6" style="border-color: var(--border);">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="text-green-500">✓</span>
+                <h3 class="font-semibold text-sm">Correct: Calculated Inner Radius</h3>
+              </div>
+              <div class="rounded-3xl p-4 border-2 border-zinc-500 relative" style="background-color: var(--muted);">
+                <div class="absolute -top-3 left-4 px-2 text-xs font-mono bg-white" style="color: var(--muted-foreground);">rounded-3xl (24px)</div>
+                <div class="rounded-lg p-4 border border-dashed" style="border-color: var(--border); background-color: var(--card);">
+                  <div class="absolute -mt-7 ml-2 px-2 text-xs font-mono bg-white" style="color: var(--muted-foreground);">rounded-lg (8px)</div>
+                  <p class="text-sm" style="color: var(--muted-foreground);">Inner content with calculated radius</p>
+                </div>
+              </div>
+              <p class="text-xs mt-3 font-mono" style="color: var(--muted-foreground);">24px − 16px = 8px ✓</p>
+            </div>
+
+            <!-- Bad Example -->
+            <div class="rounded-lg border p-6" style="border-color: var(--border);">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="text-red-500">✗</span>
+                <h3 class="font-semibold text-sm">Incorrect: Same Radius</h3>
+              </div>
+              <div class="rounded-xl p-4 border-2 border-red-300" style="background-color: var(--muted);">
+                <div class="rounded-xl p-4 border border-dashed" style="border-color: var(--border); background-color: var(--card);">
+                  <p class="text-sm" style="color: var(--muted-foreground);">Same radius looks misaligned</p>
+                </div>
+              </div>
+              <p class="text-xs mt-3" style="color: var(--muted-foreground);">Both using rounded-xl creates uneven spacing at corners</p>
+            </div>
+          </div>
+
+          <!-- Pairings Reference -->
+          <div class="lg:w-80 space-y-4">
+            <h4 class="font-semibold text-sm mb-3">Common Pairings</h4>
+            <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);">
+              <table class="w-full text-sm">
+                <thead><tr style="border-bottom: 1px solid var(--border); background-color: var(--muted);"><th class="text-left p-2 font-medium">Outer</th><th class="text-left p-2 font-medium">Padding</th><th class="text-left p-2 font-medium">Inner</th></tr></thead>
+                <tbody>
+                  <tr style="border-bottom: 1px solid var(--border);"><td class="p-2 font-mono text-xs">3xl (24px)</td><td class="p-2 font-mono text-xs">p-4 (16px)</td><td class="p-2 font-mono text-xs">lg (8px)</td></tr>
+                  <tr style="border-bottom: 1px solid var(--border);"><td class="p-2 font-mono text-xs">3xl (24px)</td><td class="p-2 font-mono text-xs">p-3 (12px)</td><td class="p-2 font-mono text-xs">xl (12px)</td></tr>
+                  <tr style="border-bottom: 1px solid var(--border);"><td class="p-2 font-mono text-xs">2xl (16px)</td><td class="p-2 font-mono text-xs">p-2 (8px)</td><td class="p-2 font-mono text-xs">lg (8px)</td></tr>
+                  <tr style="border-bottom: 1px solid var(--border);"><td class="p-2 font-mono text-xs">xl (12px)</td><td class="p-2 font-mono text-xs">p-1 (4px)</td><td class="p-2 font-mono text-xs">lg (8px)</td></tr>
+                  <tr><td class="p-2 font-mono text-xs">lg (8px)</td><td class="p-2 font-mono text-xs">p-1 (4px)</td><td class="p-2 font-mono text-xs">DEFAULT (4px)</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="text-xs" style="color: var(--muted-foreground);">Pick the closest Tailwind radius class to the calculated value.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="radius-shadows" class="mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-bold mb-6">Radius + Shadows</h2>
+        <p class="text-sm mb-4" style="color: var(--muted-foreground);">Box shadows automatically follow the border radius curve. Larger shadows pair well with a larger corner radius for a cohesive elevated appearance.</p>
+        <div class="rounded-lg border p-4 mb-8" style="border-color: var(--border); background-color: var(--muted);">
+          <p class="text-sm" style="color: var(--muted-foreground);"><strong class="text-foreground">Design rationale:</strong> Larger shadows suggest more visual elevation—elements appear "higher" off the surface. Higher elements benefit from softer, more rounded corners to maintain visual harmony.</p>
+        </div>
+
+        <div class="flex flex-wrap gap-6">
+          <!-- Shadow Examples -->
+          <div class="rounded-lg border p-6 w-full" style="border-color: var(--border);">
+            <h3 class="text-lg font-semibold mb-6">Shadow + Radius Pairings</h3>
+            <div class="flex flex-wrap gap-8 justify-center">
+              <div class="text-center">
+                <div class="w-24 h-24 rounded-md shadow-sm mb-3 flex items-center justify-center" style="background-color: var(--card);">
+                  <span class="text-xs font-mono" style="color: var(--muted-foreground);">sm</span>
+                </div>
+                <p class="text-xs font-mono" style="color: var(--muted-foreground);">rounded-md</p>
+                <p class="text-xs font-mono" style="color: var(--muted-foreground);">shadow-sm</p>
+              </div>
+              <div class="text-center">
+                <div class="w-24 h-24 rounded-lg shadow mb-3 flex items-center justify-center" style="background-color: var(--card);">
+                  <span class="text-xs font-mono" style="color: var(--muted-foreground);">default</span>
+                </div>
+                <p class="text-xs font-mono" style="color: var(--muted-foreground);">rounded-lg</p>
+                <p class="text-xs font-mono" style="color: var(--muted-foreground);">shadow</p>
+              </div>
+              <div class="text-center">
+                <div class="w-24 h-24 rounded-xl shadow-md mb-3 flex items-center justify-center" style="background-color: var(--card);">
+                  <span class="text-xs font-mono" style="color: var(--muted-foreground);">md</span>
+                </div>
+                <p class="text-xs font-mono" style="color: var(--muted-foreground);">rounded-xl</p>
+                <p class="text-xs font-mono" style="color: var(--muted-foreground);">shadow-md</p>
+              </div>
+              <div class="text-center">
+                <div class="w-24 h-24 rounded-2xl shadow-lg mb-3 flex items-center justify-center" style="background-color: var(--card);">
+                  <span class="text-xs font-mono" style="color: var(--muted-foreground);">lg</span>
+                </div>
+                <p class="text-xs font-mono" style="color: var(--muted-foreground);">rounded-2xl</p>
+                <p class="text-xs font-mono" style="color: var(--muted-foreground);">shadow-lg</p>
+              </div>
+              <div class="text-center">
+                <div class="w-24 h-24 rounded-3xl shadow-xl mb-3 flex items-center justify-center" style="background-color: var(--card);">
+                  <span class="text-xs font-mono" style="color: var(--muted-foreground);">xl</span>
+                </div>
+                <p class="text-xs font-mono" style="color: var(--muted-foreground);">rounded-3xl</p>
+                <p class="text-xs font-mono" style="color: var(--muted-foreground);">shadow-xl</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Practical Examples -->
+          <div class="rounded-lg border p-6 w-full md:w-[calc(50%-12px)]" style="border-color: var(--border);">
+            <h3 class="text-lg font-semibold mb-4">Elevated Card</h3>
+            <div class="rounded-xl shadow-lg p-6" style="background-color: var(--card);">
+              <h4 class="font-semibold mb-2">Card Title</h4>
+              <p class="text-sm mb-4" style="color: var(--muted-foreground);">Larger radius with larger shadow creates a floating, elevated appearance.</p>
+              <button class="px-4 py-2 rounded-md text-sm font-medium text-white" style="background-color: var(--primary);">Action</button>
+            </div>
+            <p class="text-xs mt-3 font-mono" style="color: var(--muted-foreground);">rounded-xl + shadow-lg</p>
+          </div>
+
+          <div class="rounded-lg border p-6 w-full md:w-[calc(50%-12px)]" style="border-color: var(--border);">
+            <h3 class="text-lg font-semibold mb-4">Subtle Card</h3>
+            <div class="rounded-lg shadow-sm border p-6" style="background-color: var(--card); border-color: var(--border);">
+              <h4 class="font-semibold mb-2">Card Title</h4>
+              <p class="text-sm mb-4" style="color: var(--muted-foreground);">Smaller radius with subtle shadow for inline content.</p>
+              <button class="px-4 py-2 rounded-md text-sm font-medium text-white" style="background-color: var(--primary);">Action</button>
+            </div>
+            <p class="text-xs mt-3 font-mono" style="color: var(--muted-foreground);">rounded-lg + shadow-sm + border</p>
+          </div>
+        </div>
+
+        <!-- Guidelines -->
+        <div class="mt-8 rounded-lg border p-6" style="border-color: var(--border); background-color: var(--card);">
+          <h3 class="text-lg font-semibold mb-4">Guidelines</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
+            <div>
+              <h4 class="font-medium mb-2">Scale Together</h4>
+              <p style="color: var(--muted-foreground);">Larger shadows suggest more elevation. Pair with a larger corner radius to maintain proportion.</p>
+            </div>
+            <div>
+              <h4 class="font-medium mb-2">Combine with Border</h4>
+              <p style="color: var(--muted-foreground);">For subtle elevation, use <code class="px-1 py-0.5 rounded text-xs" style="background-color: var(--muted);">shadow-sm</code> with a border for definition.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="pt-12 mb-20" style="border-top: 1px solid var(--border);">
+      <section id="best-practices" class="pt-12 mb-20 scroll-mt-24" style="border-top: 1px solid var(--border);">
         <h2 class="text-2xl font-bold mb-6">Best Practices</h2>
-        <ul class="list-disc pl-5 space-y-3 text-sm" style="color: var(--muted-foreground);">
-          <li><strong class="font-medium" style="color: var(--foreground);">Match nested radii.</strong> Inner elements should use a smaller radius than their container.</li>
-          <li><strong class="font-medium" style="color: var(--foreground);">Use rounded-full sparingly.</strong> Reserve full rounding for avatars, badges, pills, and toggle controls.</li>
-          <li><strong class="font-medium" style="color: var(--foreground);">Be consistent within groups.</strong> All buttons in a button group should share the same radius.</li>
-          <li><strong class="font-medium" style="color: var(--foreground);">Consider the content.</strong> Larger containers benefit from larger radii; small, dense UI elements work better with smaller radii.</li>
-          <li><strong class="font-medium" style="color: var(--foreground);">Avoid mixing too many values.</strong> Stick to 2-3 radius values per component to maintain visual consistency.</li>
-        </ul>
+        <div class="flex flex-wrap gap-4">
+          <div class="w-full md:w-[calc(50%-8px)] rounded-lg border p-5" style="border-color: var(--border); background-color: var(--card);">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-primary">✓</span>
+              <h3 class="font-semibold text-sm">Consider the Content</h3>
+            </div>
+            <p class="text-sm" style="color: var(--muted-foreground);">Larger containers benefit from a larger corner radius; small, dense UI elements work better with a smaller corner radius.</p>
+          </div>
+          <div class="w-full md:w-[calc(50%-8px)] rounded-lg border p-5" style="border-color: var(--border); background-color: var(--card);">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-primary">✓</span>
+              <h3 class="font-semibold text-sm">Avoid Mixing Too Many Values</h3>
+            </div>
+            <p class="text-sm" style="color: var(--muted-foreground);">Stick to 2-3 radius values per component to maintain visual consistency.</p>
+          </div>
+          <div class="w-full md:w-[calc(50%-8px)] rounded-lg border p-5" style="border-color: var(--border); background-color: var(--card);">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-primary">✓</span>
+              <h3 class="font-semibold text-sm">Be Consistent Within Groups</h3>
+            </div>
+            <p class="text-sm" style="color: var(--muted-foreground);">All buttons in a button group should share the same radius.</p>
+          </div>
+        </div>
       </section>
+
+        </div><!-- End Main Content Area -->
+      </div><!-- End Page Layout with Sidebar -->
     </div>
   </main>
+
+  <!-- Scroll Spy Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.section-link');
+
+      document.documentElement.style.scrollBehavior = 'smooth';
+
+      function updateActiveLink() {
+        const scrollPosition = window.scrollY + 100;
+
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight;
+          const sectionId = section.getAttribute('id');
+
+          if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            navLinks.forEach(link => {
+              link.style.color = 'var(--muted-foreground)';
+              link.style.fontWeight = '400';
+              link.style.borderLeft = 'none';
+              link.style.paddingLeft = '0';
+
+              if (link.getAttribute('href') === '#' + sectionId) {
+                link.style.color = 'var(--foreground)';
+                link.style.fontWeight = '500';
+                link.style.borderLeft = '2px solid var(--primary)';
+                link.style.paddingLeft = '12px';
+              }
+            });
+          }
+        });
+      }
+
+      window.addEventListener('scroll', updateActiveLink);
+      updateActiveLink();
+    });
+  </script>
+
+  <!-- Footer -->
+  <footer class="border-t py-8 mt-8" style="border-color: var(--border);">
+    <div class="container mx-auto px-6 lg:px-8">
+      <p class="text-sm" style="color: var(--muted-foreground);">Effectful Design System</p>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      var toggle = document.getElementById('theme-toggle');
+      var sun = document.getElementById('theme-sun');
+      var moon = document.getElementById('theme-moon');
+      if (document.documentElement.classList.contains('dark')) {
+        sun.classList.remove('hidden');
+        moon.classList.add('hidden');
+      }
+      toggle.addEventListener('click', function() {
+        var isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        sun.classList.toggle('hidden', !isDark);
+        moon.classList.toggle('hidden', isDark);
+      });
+    })();
+  </script>
 </body>
 </html>
