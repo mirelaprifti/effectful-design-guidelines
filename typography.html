@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Typography – Effectful Design Guidelines</title>
+  <link rel="icon" type="image/png" href="assets/favicon-32px.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -78,6 +79,10 @@
       color: var(--foreground);
       font-family: 'Inter', system-ui, sans-serif;
     }
+    .dark .logo-icon { filter: invert(1); }
+    .nav-link { color: var(--muted-foreground); transition: color 0.15s; }
+    .nav-link:hover { color: var(--foreground); }
+    .nav-link.active { color: var(--foreground); font-weight: 500; }
   </style>
   <script>
     if (localStorage.getItem('theme') === 'dark') {
@@ -90,15 +95,19 @@
   <nav class="border-b sticky top-0 z-50" style="border-color: var(--border); background-color: var(--background);">
     <div class="container mx-auto px-6 lg:px-8">
       <div class="flex h-14 items-center justify-between">
-        <a href="index.html" class="text-sm font-medium" style="color: var(--foreground);">Effectful Design Guidelines</a>
-        <div class="hidden md:flex items-center gap-8">
-          <a href="typography.html" class="text-sm" style="color: var(--foreground);">Typography</a>
-          <a href="colors.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Colors</a>
-          <a href="spacing.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Spacing</a>
-          <a href="border-radius.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Border Radius</a>
-          <a href="layout-system.html" class="text-sm transition-colors" style="color: var(--muted-foreground);">Layout</a>
-        </div>
-        <div class="flex items-center gap-1">
+        <a href="index.html" class="flex items-center gap-2 text-sm font-medium" style="color: var(--foreground);">
+          <img src="assets/effectful-symbol-black.svg" alt="" class="h-5 w-5 logo-icon">
+          Effectful Design Guidelines
+        </a>
+        <div class="flex items-center gap-6">
+          <div class="hidden md:flex items-center gap-6">
+            <a href="typography.html" class="text-sm nav-link active">Typography</a>
+            <a href="colors.html" class="text-sm nav-link">Colors</a>
+            <a href="spacing.html" class="text-sm nav-link">Spacing</a>
+            <a href="border-radius.html" class="text-sm nav-link">Border Radius</a>
+            <a href="layout-system.html" class="text-sm nav-link">Layout</a>
+          </div>
+          <div class="flex items-center gap-3">
           <button id="theme-toggle" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200" style="background-color: var(--muted);" aria-label="Toggle theme">
             <span id="theme-thumb" class="inline-flex h-5 w-5 items-center justify-center rounded-full shadow-sm transition-transform duration-200 translate-x-0.5" style="background-color: var(--background);">
               <svg id="theme-sun" class="w-3 h-3 hidden" style="color: var(--muted-foreground);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
@@ -108,15 +117,16 @@
           <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden p-2 -mr-2" style="color: var(--foreground);" aria-label="Toggle menu">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
           </button>
+          </div>
         </div>
       </div>
       <div id="mobile-menu" class="hidden md:hidden pb-4 border-t" style="border-color: var(--border);">
         <div class="flex flex-col gap-1 pt-3">
-          <a href="typography.html" class="text-sm py-2 px-2 rounded font-medium" style="color: var(--foreground);">Typography</a>
-          <a href="colors.html" class="text-sm py-2 px-2 rounded transition-colors" style="color: var(--muted-foreground);">Colors</a>
-          <a href="spacing.html" class="text-sm py-2 px-2 rounded transition-colors" style="color: var(--muted-foreground);">Spacing</a>
-          <a href="border-radius.html" class="text-sm py-2 px-2 rounded transition-colors" style="color: var(--muted-foreground);">Border Radius</a>
-          <a href="layout-system.html" class="text-sm py-2 px-2 rounded transition-colors" style="color: var(--muted-foreground);">Layout</a>
+          <a href="typography.html" class="text-sm py-2 px-2 rounded nav-link active">Typography</a>
+          <a href="colors.html" class="text-sm py-2 px-2 rounded nav-link">Colors</a>
+          <a href="spacing.html" class="text-sm py-2 px-2 rounded nav-link">Spacing</a>
+          <a href="border-radius.html" class="text-sm py-2 px-2 rounded nav-link">Border Radius</a>
+          <a href="layout-system.html" class="text-sm py-2 px-2 rounded nav-link">Layout</a>
         </div>
       </div>
     </div>
