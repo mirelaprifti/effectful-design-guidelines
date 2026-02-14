@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Effectful Font – Effectful Design Guidelines</title>
+  <link rel="icon" type="image/png" href="assets/favicon-32px.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Effectful', 'system-ui', 'sans-serif'],
+            mono: ['IBM Plex Mono', 'monospace'],
+          },
+          colors: {
+            background: 'var(--background)',
+            foreground: 'var(--foreground)',
+            card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+            muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+            border: 'var(--border)',
+            input: 'var(--input)',
+            primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)', text: 'var(--primary-text)' },
+            secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+            destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
+            ring: 'var(--ring)',
+          },
+          borderColor: {
+            DEFAULT: 'var(--border)',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    @font-face {
+      font-family: 'Effectful';
+      src: url('fonts/Effectful extra-light.ttf') format('truetype');
+      font-weight: 200;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Effectful';
+      src: url('fonts/Effectful light.ttf') format('truetype');
+      font-weight: 300;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Effectful';
+      src: url('fonts/Effectful regular.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Effectful';
+      src: url('fonts/Effectful medium.ttf') format('truetype');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Effectful';
+      src: url('fonts/Effectful semibold.ttf') format('truetype');
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Effectful';
+      src: url('fonts/Effectful bold.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Effectful';
+      src: url('fonts/Effectful extrabold.ttf') format('truetype');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Effectful';
+      src: url('fonts/Effectful black.ttf') format('truetype');
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+    }
+    :root {
+      --background: oklch(0.985 0.002 247.839);
+      --foreground: oklch(0.141 0.005 285.823);
+      --card: #ffffff;
+      --card-foreground: oklch(0.141 0.005 285.823);
+      --muted: oklch(0.967 0.001 286.375);
+      --muted-foreground: oklch(0.50 0.016 285.938);
+      --border: oklch(0.92 0.004 286.32);
+      --input: oklch(0.92 0.004 286.32);
+      --primary: oklch(0.606 0.208 293);
+      --primary-foreground: #ffffff;
+      --secondary: oklch(0.967 0.001 286.375);
+      --secondary-foreground: oklch(0.21 0.006 285.885);
+      --primary-text: oklch(0.50 0.18 293);
+      --destructive: oklch(0.45 0.213 27.518);
+      --destructive-foreground: #ffffff;
+      --ring: oklch(0.552 0.016 285.938);
+      --radius: 0.5rem;
+    }
+    .dark {
+      --background: oklch(0.141 0.005 285.823);
+      --foreground: oklch(0.985 0.002 247.839);
+      --card: oklch(0.21 0.006 285.885);
+      --card-foreground: oklch(0.985 0.002 247.839);
+      --muted: oklch(0.274 0.006 286.033);
+      --muted-foreground: oklch(0.705 0.015 286.067);
+      --border: oklch(0.274 0.006 286.033);
+      --input: oklch(0.274 0.006 286.033);
+      --primary: oklch(0.606 0.208 293);
+      --primary-foreground: #ffffff;
+      --secondary: oklch(0.274 0.006 286.033);
+      --secondary-foreground: oklch(0.985 0.002 247.839);
+      --primary-text: oklch(0.72 0.15 293);
+      --destructive: oklch(0.45 0.213 27.518);
+      --destructive-foreground: #ffffff;
+      --ring: oklch(0.705 0.015 286.067);
+    }
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: 'Effectful', system-ui, sans-serif;
+      letter-spacing: 0.03em;
+    }
+    .dark .logo-icon { filter: invert(1); }
+    .nav-link { color: var(--muted-foreground); transition: color 0.15s; }
+    .nav-link:hover { color: var(--foreground); }
+    .nav-link.active { color: var(--foreground); font-weight: 500; }
+  </style>
+  <script>
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+</head>
+<body class="min-h-screen">
+  <!-- Navigation -->
+  <nav class="border-b sticky top-0 z-50" style="border-color: var(--border); background-color: var(--background);">
+    <div class="container mx-auto px-6 lg:px-8">
+      <div class="flex h-14 items-center justify-between">
+        <a href="index.html" class="flex items-center gap-2 text-sm font-medium" style="color: var(--foreground);">
+          <img src="assets/effectful-symbol-black.svg" alt="" class="h-5 w-5 logo-icon">
+          Effectful Design Guidelines
+        </a>
+        <div class="flex items-center gap-6">
+          <div class="hidden md:flex items-center gap-6">
+            <a href="typography.html" class="text-sm nav-link">Typography</a>
+            <a href="colors.html" class="text-sm nav-link">Colors</a>
+            <a href="spacing.html" class="text-sm nav-link">Spacing</a>
+            <a href="border-radius.html" class="text-sm nav-link">Border Radius</a>
+            <a href="layout-system.html" class="text-sm nav-link">Layout</a>
+          </div>
+          <div class="flex items-center gap-3">
+          <button id="theme-toggle" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200" style="background-color: var(--muted);" aria-label="Toggle theme">
+            <span id="theme-thumb" class="inline-flex h-5 w-5 items-center justify-center rounded-full shadow-sm transition-transform duration-200 translate-x-0.5" style="background-color: var(--background);">
+              <svg id="theme-sun" class="w-3 h-3 hidden" style="color: var(--muted-foreground);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+              <svg id="theme-moon" class="w-3 h-3" style="color: var(--muted-foreground);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+            </span>
+          </button>
+          <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden p-2 -mr-2" style="color: var(--foreground);" aria-label="Toggle menu">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          </div>
+        </div>
+      </div>
+      <div id="mobile-menu" class="hidden md:hidden pb-4 border-t" style="border-color: var(--border);">
+        <div class="flex flex-col gap-1 pt-3">
+          <a href="typography.html" class="text-sm py-2 px-2 rounded nav-link">Typography</a>
+          <a href="colors.html" class="text-sm py-2 px-2 rounded nav-link">Colors</a>
+          <a href="spacing.html" class="text-sm py-2 px-2 rounded nav-link">Spacing</a>
+          <a href="border-radius.html" class="text-sm py-2 px-2 rounded nav-link">Border Radius</a>
+          <a href="layout-system.html" class="text-sm py-2 px-2 rounded nav-link">Layout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Breadcrumb -->
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <a href="index.html" class="inline-flex items-center gap-2 text-sm transition-colors" style="color: var(--muted-foreground);">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+      Foundations
+    </a>
+  </div>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+    <div class="max-w-5xl">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Effectful Font</h1>
+      <p class="text-lg mb-16 leading-relaxed max-w-3xl" style="color: var(--muted-foreground);">
+        Effectful custom font for branding and display text. 8 weights from Extra Light to Black.
+      </p>
+      <div class="mb-12" style="border-top: 1px solid var(--border);"></div>
+
+      <!-- Page Layout with Sidebar Navigation -->
+      <div class="lg:flex lg:gap-12">
+        <!-- Sticky Section Navigation (Desktop only) -->
+        <aside class="hidden lg:block lg:w-48 shrink-0">
+          <nav class="sticky top-20" id="section-nav">
+            <p class="text-xs font-medium uppercase tracking-wide mb-4" style="color: var(--muted-foreground);">On this page</p>
+            <ul class="space-y-2 text-sm">
+              <li><a href="#typefaces" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Typefaces</a></li>
+              <li><a href="#font-weights" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Font Weights</a></li>
+              <li><a href="#text-sizes" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Text Sizes</a></li>
+              <li><a href="#line-height" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Line Height</a></li>
+              <li><a href="#letter-spacing" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Letter Spacing</a></li>
+              <li><a href="#best-practices" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Best Practices</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 min-w-0">
+
+      <!-- Typefaces -->
+      <section id="typefaces" class="mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-bold mb-6">Typefaces</h2>
+        <div class="flex flex-col md:flex-row gap-6">
+          <!-- Effectful Card -->
+          <div class="flex-1 rounded-lg border p-6" style="border-color: var(--border); background-color: var(--card);">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <p class="text-3xl font-semibold mb-1" style="font-family: 'Effectful', sans-serif;">Effectful</p>
+                <p class="text-sm" style="color: var(--muted-foreground);">Branding, display text, headings</p>
+              </div>
+              <span class="text-xs font-mono px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">Sans-serif</span>
+            </div>
+            <div class="pt-4" style="border-top: 1px solid var(--border);">
+              <p class="text-2xl mb-2" style="font-family: 'Effectful', sans-serif;">Aa Bb Cc Dd Ee Ff Gg Hh Ii</p>
+              <p class="text-lg" style="font-family: 'Effectful', sans-serif; color: var(--muted-foreground);">0123456789 !@#$%^&*()</p>
+            </div>
+          </div>
+          <!-- IBM Plex Mono Card -->
+          <div class="flex-1 rounded-lg border p-6" style="border-color: var(--border); background-color: var(--card);">
+            <div class="flex items-start justify-between mb-4">
+              <div>
+                <p class="text-3xl font-semibold mb-1 font-mono">IBM Plex Mono</p>
+                <p class="text-sm" style="color: var(--muted-foreground);">Code snippets, technical data</p>
+              </div>
+              <span class="text-xs font-mono px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">Monospace</span>
+            </div>
+            <div class="pt-4" style="border-top: 1px solid var(--border);">
+              <p class="text-2xl mb-2 font-mono">Aa Bb Cc Dd Ee Ff Gg Hh Ii</p>
+              <p class="text-lg font-mono" style="color: var(--muted-foreground);">0123456789 !@#$%^&*()</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Font Weights -->
+      <section id="font-weights" class="mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-bold mb-2">Font Weights</h2>
+        <p class="text-sm mb-6" style="color: var(--muted-foreground);">Available weights for each typeface and when to use them</p>
+        <div class="flex flex-col lg:flex-row gap-6">
+          <!-- Effectful Weights -->
+          <div class="flex-1 rounded-lg border overflow-hidden" style="border-color: var(--border);">
+            <div class="px-4 py-3" style="background-color: var(--muted);">
+              <h3 class="text-sm font-semibold">Effectful</h3>
+            </div>
+            <div class="divide-y" style="border-color: var(--border);">
+              <div class="flex items-baseline justify-between p-4" style="background-color: var(--card);">
+                <span class="text-lg" style="font-weight: 200;">Extra Light</span>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs" style="color: var(--muted-foreground);">Decorative, large display</span>
+                  <code class="text-xs font-mono px-2 py-0.5 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">font-extralight</code>
+                  <span class="text-xs font-mono w-8 text-right" style="color: var(--muted-foreground);">200</span>
+                </div>
+              </div>
+              <div class="flex items-baseline justify-between p-4">
+                <span class="text-lg font-light">Light</span>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs" style="color: var(--muted-foreground);">Subtle display text</span>
+                  <code class="text-xs font-mono px-2 py-0.5 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">font-light</code>
+                  <span class="text-xs font-mono w-8 text-right" style="color: var(--muted-foreground);">300</span>
+                </div>
+              </div>
+              <div class="flex items-baseline justify-between p-4" style="background-color: var(--card);">
+                <span class="text-lg font-normal">Regular</span>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs" style="color: var(--muted-foreground);">Body text, descriptions</span>
+                  <code class="text-xs font-mono px-2 py-0.5 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">font-normal</code>
+                  <span class="text-xs font-mono w-8 text-right" style="color: var(--muted-foreground);">400</span>
+                </div>
+              </div>
+              <div class="flex items-baseline justify-between p-4">
+                <span class="text-lg font-medium">Medium</span>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs" style="color: var(--muted-foreground);">Labels, nav items</span>
+                  <code class="text-xs font-mono px-2 py-0.5 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">font-medium</code>
+                  <span class="text-xs font-mono w-8 text-right" style="color: var(--muted-foreground);">500</span>
+                </div>
+              </div>
+              <div class="flex items-baseline justify-between p-4" style="background-color: var(--card);">
+                <span class="text-lg font-semibold">Semibold</span>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs" style="color: var(--muted-foreground);">Subheadings, emphasis</span>
+                  <code class="text-xs font-mono px-2 py-0.5 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">font-semibold</code>
+                  <span class="text-xs font-mono w-8 text-right" style="color: var(--muted-foreground);">600</span>
+                </div>
+              </div>
+              <div class="flex items-baseline justify-between p-4">
+                <span class="text-lg font-bold">Bold</span>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs" style="color: var(--muted-foreground);">Page headings, titles</span>
+                  <code class="text-xs font-mono px-2 py-0.5 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">font-bold</code>
+                  <span class="text-xs font-mono w-8 text-right" style="color: var(--muted-foreground);">700</span>
+                </div>
+              </div>
+              <div class="flex items-baseline justify-between p-4" style="background-color: var(--card);">
+                <span class="text-lg" style="font-weight: 800;">Extra Bold</span>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs" style="color: var(--muted-foreground);">Strong emphasis, hero text</span>
+                  <code class="text-xs font-mono px-2 py-0.5 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">font-extrabold</code>
+                  <span class="text-xs font-mono w-8 text-right" style="color: var(--muted-foreground);">800</span>
+                </div>
+              </div>
+              <div class="flex items-baseline justify-between p-4">
+                <span class="text-lg" style="font-weight: 900;">Black</span>
+                <div class="flex items-center gap-3">
+                  <span class="text-xs" style="color: var(--muted-foreground);">Impact, display headings</span>
+                  <code class="text-xs font-mono px-2 py-0.5 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">font-black</code>
+                  <span class="text-xs font-mono w-8 text-right" style="color: var(--muted-foreground);">900</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- IBM Plex Mono Weights -->
+          <div class="lg:w-80 shrink-0 rounded-lg border overflow-hidden" style="border-color: var(--border);">
+            <div class="px-4 py-3" style="background-color: var(--muted);">
+              <h3 class="text-sm font-semibold">IBM Plex Mono</h3>
+            </div>
+            <div class="divide-y" style="border-color: var(--border);">
+              <div class="flex items-baseline justify-between p-4" style="background-color: var(--card);">
+                <span class="text-lg font-mono font-normal">Regular</span>
+                <div class="flex items-center gap-3">
+                  <code class="text-xs font-mono px-2 py-0.5 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">font-normal</code>
+                  <span class="text-xs font-mono w-8 text-right" style="color: var(--muted-foreground);">400</span>
+                </div>
+              </div>
+              <div class="flex items-baseline justify-between p-4">
+                <span class="text-lg font-mono font-medium">Medium</span>
+                <div class="flex items-center gap-3">
+                  <code class="text-xs font-mono px-2 py-0.5 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">font-medium</code>
+                  <span class="text-xs font-mono w-8 text-right" style="color: var(--muted-foreground);">500</span>
+                </div>
+              </div>
+              <div class="flex items-baseline justify-between p-4" style="background-color: var(--card);">
+                <span class="text-lg font-mono font-semibold">Semibold</span>
+                <div class="flex items-center gap-3">
+                  <code class="text-xs font-mono px-2 py-0.5 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">font-semibold</code>
+                  <span class="text-xs font-mono w-8 text-right" style="color: var(--muted-foreground);">600</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Text Sizes -->
+      <section id="text-sizes" class="mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-bold mb-2">Text Sizes</h2>
+        <p class="text-sm mb-6" style="color: var(--muted-foreground);">Minor Third scale (1.2×) for harmonious proportions</p>
+        <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);">
+          <div class="flex flex-col md:flex-row items-start md:items-baseline gap-4 p-5" style="background-color: var(--card);">
+            <div class="flex items-center shrink-0 md:w-36">
+              <code class="text-xs font-mono px-2 py-1 rounded w-20 text-center" style="background-color: var(--muted); color: var(--muted-foreground);">text-5xl</code>
+              <span class="text-xs font-mono w-12 text-right" style="color: var(--muted-foreground);">48px</span>
+            </div>
+            <span class="text-5xl leading-tight">Build better with Effect</span>
+          </div>
+          <div class="flex flex-col md:flex-row items-start md:items-baseline gap-4 p-5" style="border-top: 1px solid var(--border);">
+            <div class="flex items-center shrink-0 md:w-36">
+              <code class="text-xs font-mono px-2 py-1 rounded w-20 text-center" style="background-color: var(--muted); color: var(--muted-foreground);">text-4xl</code>
+              <span class="text-xs font-mono w-12 text-right" style="color: var(--muted-foreground);">36px</span>
+            </div>
+            <span class="text-4xl leading-tight">Type-safe by design</span>
+          </div>
+          <div class="flex flex-col md:flex-row items-start md:items-baseline gap-4 p-5" style="border-top: 1px solid var(--border); background-color: var(--card);">
+            <div class="flex items-center shrink-0 md:w-36">
+              <code class="text-xs font-mono px-2 py-1 rounded w-20 text-center" style="background-color: var(--muted); color: var(--muted-foreground);">text-3xl</code>
+              <span class="text-xs font-mono w-12 text-right" style="color: var(--muted-foreground);">30px</span>
+            </div>
+            <span class="text-3xl leading-snug">Composable effects for TypeScript</span>
+          </div>
+          <div class="flex flex-col md:flex-row items-start md:items-baseline gap-4 p-5" style="border-top: 1px solid var(--border);">
+            <div class="flex items-center shrink-0 md:w-36">
+              <code class="text-xs font-mono px-2 py-1 rounded w-20 text-center" style="background-color: var(--muted); color: var(--muted-foreground);">text-2xl</code>
+              <span class="text-xs font-mono w-12 text-right" style="color: var(--muted-foreground);">24px</span>
+            </div>
+            <span class="text-2xl leading-snug">Error handling made simple</span>
+          </div>
+          <div class="flex flex-col md:flex-row items-start md:items-baseline gap-4 p-5" style="border-top: 1px solid var(--border); background-color: var(--card);">
+            <div class="flex items-center shrink-0 md:w-36">
+              <code class="text-xs font-mono px-2 py-1 rounded w-20 text-center" style="background-color: var(--muted); color: var(--muted-foreground);">text-xl</code>
+              <span class="text-xs font-mono w-12 text-right" style="color: var(--muted-foreground);">20px</span>
+            </div>
+            <span class="text-xl leading-normal">Powerful abstractions for reliable applications</span>
+          </div>
+          <div class="flex flex-col md:flex-row items-start md:items-baseline gap-4 p-5" style="border-top: 1px solid var(--border);">
+            <div class="flex items-center shrink-0 md:w-36">
+              <code class="text-xs font-mono px-2 py-1 rounded w-20 text-center" style="background-color: var(--muted); color: var(--muted-foreground);">text-lg</code>
+              <span class="text-xs font-mono w-12 text-right" style="color: var(--muted-foreground);">18px</span>
+            </div>
+            <span class="text-lg leading-normal">Effect is a TypeScript library for building robust applications.</span>
+          </div>
+          <div class="flex flex-col md:flex-row items-start md:items-baseline gap-4 p-5" style="border-top: 1px solid var(--border); background-color: var(--card);">
+            <div class="flex items-center shrink-0 md:w-36">
+              <code class="text-xs font-mono px-2 py-1 rounded w-20 text-center" style="background-color: var(--muted); color: var(--muted-foreground);">text-base</code>
+              <span class="text-xs font-mono w-12 text-right" style="color: var(--muted-foreground);">16px</span>
+            </div>
+            <span class="text-base leading-relaxed">The Effect ecosystem provides tools for managing side effects, errors, and resources.</span>
+          </div>
+          <div class="flex flex-col md:flex-row items-start md:items-baseline gap-4 p-5" style="border-top: 1px solid var(--border);">
+            <div class="flex items-center shrink-0 md:w-36">
+              <code class="text-xs font-mono px-2 py-1 rounded w-20 text-center" style="background-color: var(--muted); color: var(--muted-foreground);">text-sm</code>
+              <span class="text-xs font-mono w-12 text-right" style="color: var(--muted-foreground);">14px</span>
+            </div>
+            <span class="text-sm leading-relaxed">Effect offers a batteries-included toolkit with Schema validation and more.</span>
+          </div>
+          <div class="flex flex-col md:flex-row items-start md:items-baseline gap-4 p-5" style="border-top: 1px solid var(--border); background-color: var(--card);">
+            <div class="flex items-center shrink-0 md:w-36">
+              <code class="text-xs font-mono px-2 py-1 rounded w-20 text-center" style="background-color: var(--muted); color: var(--muted-foreground);">text-xs</code>
+              <span class="text-xs font-mono w-12 text-right" style="color: var(--muted-foreground);">12px</span>
+            </div>
+            <span class="text-xs leading-relaxed uppercase">BUILT WITH DEVELOPER EXPERIENCE IN MIND</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Line Height -->
+      <section id="line-height" class="mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-bold mb-2">Line Height</h2>
+        <p class="text-sm mb-6" style="color: var(--muted-foreground);">Control vertical rhythm with line height utilities</p>
+        <div class="flex flex-col lg:flex-row gap-6">
+          <!-- Line Height Examples -->
+          <div class="flex-1 flex flex-col gap-4">
+            <div class="rounded-lg border p-4" style="border-color: var(--border); background-color: var(--card);">
+              <div class="flex items-center gap-3 mb-3">
+                <code class="text-xs font-mono px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">leading-tight</code>
+                <span class="text-xs font-mono" style="color: var(--muted-foreground);">1.25</span>
+                <span class="text-xs" style="color: var(--muted-foreground);">· Large headings</span>
+              </div>
+              <p class="text-lg leading-tight">Build Reliable TypeScript Applications with Effect</p>
+            </div>
+            <div class="rounded-lg border p-4" style="border-color: var(--border); background-color: var(--card);">
+              <div class="flex items-center gap-3 mb-3">
+                <code class="text-xs font-mono px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">leading-normal</code>
+                <span class="text-xs font-mono" style="color: var(--muted-foreground);">1.5</span>
+                <span class="text-xs" style="color: var(--muted-foreground);">· UI text, labels</span>
+              </div>
+              <p class="text-base leading-normal">Schema validation · Dependency injection · Structured concurrency · Observability</p>
+            </div>
+            <div class="rounded-lg border p-4" style="border-color: var(--border); background-color: var(--card);">
+              <div class="flex items-center gap-3 mb-3">
+                <code class="text-xs font-mono px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">leading-relaxed</code>
+                <span class="text-xs font-mono" style="color: var(--muted-foreground);">1.625</span>
+                <span class="text-xs" style="color: var(--muted-foreground);">· Body text, paragraphs</span>
+              </div>
+              <p class="text-base leading-relaxed">Effect provides a comprehensive toolkit for TypeScript developers. It handles errors as values, manages resources safely, and enables structured concurrency — all with full type safety.</p>
+            </div>
+          </div>
+          <!-- Line Height Reference -->
+          <div class="lg:w-64 shrink-0">
+            <div class="rounded-lg border p-4 space-y-3" style="border-color: var(--border); background-color: var(--muted);">
+              <h4 class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted-foreground);">All Values</h4>
+              <div class="space-y-2 text-sm">
+                <div class="flex justify-between"><code class="font-mono">leading-none</code><span style="color: var(--muted-foreground);">1</span></div>
+                <div class="flex justify-between"><code class="font-mono">leading-tight</code><span style="color: var(--muted-foreground);">1.25</span></div>
+                <div class="flex justify-between"><code class="font-mono">leading-snug</code><span style="color: var(--muted-foreground);">1.375</span></div>
+                <div class="flex justify-between"><code class="font-mono">leading-normal</code><span style="color: var(--muted-foreground);">1.5</span></div>
+                <div class="flex justify-between"><code class="font-mono">leading-relaxed</code><span style="color: var(--muted-foreground);">1.625</span></div>
+                <div class="flex justify-between"><code class="font-mono">leading-loose</code><span style="color: var(--muted-foreground);">2</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Letter Spacing -->
+      <section id="letter-spacing" class="mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-bold mb-2">Letter Spacing</h2>
+        <p class="text-sm mb-6" style="color: var(--muted-foreground);">Fine-tune character spacing for different contexts</p>
+        <div class="flex flex-col lg:flex-row gap-6">
+          <!-- Letter Spacing Examples -->
+          <div class="flex-1 flex flex-col gap-4">
+            <div class="rounded-lg border p-4" style="border-color: var(--border); background-color: var(--card);">
+              <div class="flex items-center gap-3 mb-3">
+                <code class="text-xs font-mono px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">tracking-tight</code>
+                <span class="text-xs font-mono" style="color: var(--muted-foreground);">-0.025em</span>
+                <span class="text-xs" style="color: var(--muted-foreground);">· Large display text</span>
+              </div>
+              <p class="text-3xl font-semibold tracking-tight">Build Better Software</p>
+            </div>
+            <div class="rounded-lg border p-4" style="border-color: var(--border); background-color: var(--card);">
+              <div class="flex items-center gap-3 mb-3">
+                <code class="text-xs font-mono px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">tracking-normal</code>
+                <span class="text-xs font-mono" style="color: var(--muted-foreground);">0em</span>
+                <span class="text-xs" style="color: var(--muted-foreground);">· Body text</span>
+              </div>
+              <p class="text-base tracking-normal">Build Better Software</p>
+            </div>
+            <div class="rounded-lg border p-4" style="border-color: var(--border); background-color: var(--card);">
+              <div class="flex items-center gap-3 mb-3">
+                <code class="text-xs font-mono px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">tracking-wider</code>
+                <span class="text-xs font-mono" style="color: var(--muted-foreground);">0.05em</span>
+                <span class="text-xs" style="color: var(--muted-foreground);">· Uppercase labels</span>
+              </div>
+              <p class="text-xs font-semibold uppercase tracking-wider">Build Better Software</p>
+            </div>
+          </div>
+          <!-- Letter Spacing Reference -->
+          <div class="lg:w-64 shrink-0">
+            <div class="rounded-lg border p-4 space-y-3" style="border-color: var(--border); background-color: var(--muted);">
+              <h4 class="text-xs font-semibold uppercase tracking-wide" style="color: var(--muted-foreground);">All Values</h4>
+              <div class="space-y-2 text-sm">
+                <div class="flex justify-between"><code class="font-mono">tracking-tighter</code><span style="color: var(--muted-foreground);">-0.05em</span></div>
+                <div class="flex justify-between"><code class="font-mono">tracking-tight</code><span style="color: var(--muted-foreground);">-0.025em</span></div>
+                <div class="flex justify-between"><code class="font-mono">tracking-normal</code><span style="color: var(--muted-foreground);">0em</span></div>
+                <div class="flex justify-between"><code class="font-mono">tracking-wide</code><span style="color: var(--muted-foreground);">0.025em</span></div>
+                <div class="flex justify-between"><code class="font-mono">tracking-wider</code><span style="color: var(--muted-foreground);">0.05em</span></div>
+                <div class="flex justify-between"><code class="font-mono">tracking-widest</code><span style="color: var(--muted-foreground);">0.1em</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Best Practices -->
+      <section id="best-practices" class="pt-12 mb-20 scroll-mt-24" style="border-top: 1px solid var(--border);">
+        <h2 class="text-2xl font-bold mb-6">Best Practices</h2>
+        <div class="flex flex-wrap gap-4">
+          <div class="w-full md:w-[calc(50%-8px)] rounded-lg border p-5" style="border-color: var(--border); background-color: var(--card);">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-primary">✓</span>
+              <h3 class="font-semibold text-sm">Maintain Hierarchy</h3>
+            </div>
+            <p class="text-sm" style="color: var(--muted-foreground);">Limit to 3-4 text sizes per page for a clear visual hierarchy.</p>
+          </div>
+          <div class="w-full md:w-[calc(50%-8px)] rounded-lg border p-5" style="border-color: var(--border); background-color: var(--card);">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-primary">✓</span>
+              <h3 class="font-semibold text-sm">Balance Headings</h3>
+            </div>
+            <p class="text-sm" style="color: var(--muted-foreground);">Use <code class="font-mono text-xs px-1 rounded" style="background-color: var(--muted);">text-balance</code> to prevent awkward line breaks in titles.</p>
+          </div>
+          <div class="w-full md:w-[calc(50%-8px)] rounded-lg border p-5" style="border-color: var(--border); background-color: var(--card);">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-primary">✓</span>
+              <h3 class="font-semibold text-sm">Accessibility First</h3>
+            </div>
+            <p class="text-sm" style="color: var(--muted-foreground);">Ensure sufficient color contrast (4.5:1 for body text, 3:1 for large text).</p>
+          </div>
+          <div class="w-full md:w-[calc(50%-8px)] rounded-lg border p-5" style="border-color: var(--border); background-color: var(--card);">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-primary">✓</span>
+              <h3 class="font-semibold text-sm">Consistent Line Height</h3>
+            </div>
+            <p class="text-sm" style="color: var(--muted-foreground);">Use tighter line height for headings, relaxed for body paragraphs.</p>
+          </div>
+        </div>
+      </section>
+
+        </div><!-- End Main Content Area -->
+      </div><!-- End Page Layout with Sidebar -->
+    </div>
+  </main>
+
+  <!-- Scroll Spy Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.section-link');
+
+      document.documentElement.style.scrollBehavior = 'smooth';
+
+      function updateActiveLink() {
+        const scrollPosition = window.scrollY + 100;
+
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight;
+          const sectionId = section.getAttribute('id');
+
+          if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            navLinks.forEach(link => {
+              link.style.color = 'var(--muted-foreground)';
+              link.style.fontWeight = '400';
+              link.style.borderLeft = 'none';
+              link.style.paddingLeft = '0';
+
+              if (link.getAttribute('href') === '#' + sectionId) {
+                link.style.color = 'var(--foreground)';
+                link.style.fontWeight = '500';
+                link.style.borderLeft = '2px solid var(--primary)';
+                link.style.paddingLeft = '12px';
+              }
+            });
+          }
+        });
+      }
+
+      window.addEventListener('scroll', updateActiveLink);
+      updateActiveLink();
+    });
+  </script>
+
+  <!-- Footer -->
+  <footer class="border-t py-8 mt-8" style="border-color: var(--border);">
+    <div class="container mx-auto px-6 lg:px-8">
+      <p class="text-sm" style="color: var(--muted-foreground);">Effectful Design Guidelines</p>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      var toggle = document.getElementById('theme-toggle');
+      var thumb = document.getElementById('theme-thumb');
+      var sun = document.getElementById('theme-sun');
+      var moon = document.getElementById('theme-moon');
+      function applyState(isDark) {
+        sun.classList.toggle('hidden', !isDark);
+        moon.classList.toggle('hidden', isDark);
+        if (isDark) {
+          thumb.classList.remove('translate-x-0.5');
+          thumb.classList.add('translate-x-[1.375rem]');
+        } else {
+          thumb.classList.remove('translate-x-[1.375rem]');
+          thumb.classList.add('translate-x-0.5');
+        }
+      }
+      applyState(document.documentElement.classList.contains('dark'));
+      toggle.addEventListener('click', function() {
+        var isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        applyState(isDark);
+      });
+    })();
+  </script>
+</body>
+</html>

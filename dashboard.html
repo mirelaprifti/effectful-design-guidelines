@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard – Effectful Design Guidelines</title>
+  <link rel="icon" type="image/png" href="assets/favicon-32px.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['IBM Plex Mono', 'monospace'],
+          },
+          colors: {
+            background: 'var(--background)',
+            foreground: 'var(--foreground)',
+            card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+            muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+            border: 'var(--border)',
+            input: 'var(--input)',
+            primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)', text: 'var(--primary-text)' },
+            secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+            destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
+            ring: 'var(--ring)',
+            success: 'var(--success)',
+            warning: 'var(--warning)',
+          },
+          borderColor: {
+            DEFAULT: 'var(--border)',
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    :root {
+      --background: oklch(0.985 0.002 247.839);
+      --foreground: oklch(0.141 0.005 285.823);
+      --card: #ffffff;
+      --card-foreground: oklch(0.141 0.005 285.823);
+      --muted: oklch(0.967 0.001 286.375);
+      --muted-foreground: oklch(0.50 0.016 285.938);
+      --border: oklch(0.92 0.004 286.32);
+      --input: oklch(0.92 0.004 286.32);
+      --primary: oklch(0.606 0.208 293);
+      --primary-foreground: #ffffff;
+      --secondary: oklch(0.967 0.001 286.375);
+      --secondary-foreground: oklch(0.21 0.006 285.885);
+      --primary-text: oklch(0.50 0.18 293);
+      --destructive: oklch(0.45 0.213 27.518);
+      --destructive-foreground: #ffffff;
+      --ring: oklch(0.552 0.016 285.938);
+      --success: oklch(0.52 0.17 155);
+      --warning: oklch(0.75 0.18 75);
+      --radius: 0.5rem;
+    }
+    .dark {
+      --background: oklch(0.141 0.005 285.823);
+      --foreground: oklch(0.985 0.002 247.839);
+      --card: oklch(0.21 0.006 285.885);
+      --card-foreground: oklch(0.985 0.002 247.839);
+      --muted: oklch(0.274 0.006 286.033);
+      --muted-foreground: oklch(0.705 0.015 286.067);
+      --border: oklch(0.274 0.006 286.033);
+      --input: oklch(0.274 0.006 286.033);
+      --primary: oklch(0.606 0.208 293);
+      --primary-foreground: #ffffff;
+      --secondary: oklch(0.274 0.006 286.033);
+      --secondary-foreground: oklch(0.985 0.002 247.839);
+      --primary-text: oklch(0.72 0.15 293);
+      --destructive: oklch(0.45 0.213 27.518);
+      --destructive-foreground: #ffffff;
+      --ring: oklch(0.705 0.015 286.067);
+      --success: oklch(0.62 0.17 155);
+      --warning: oklch(0.80 0.15 75);
+    }
+    body {
+      background-color: var(--background);
+      color: var(--foreground);
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    .dark .logo-icon { filter: invert(1); }
+    .nav-link { color: var(--muted-foreground); transition: color 0.15s; }
+    .nav-link:hover { color: var(--foreground); }
+    .nav-link.active { color: var(--foreground); font-weight: 500; }
+    .chart-bar {
+      transition: opacity 0.15s;
+      border-radius: 4px 4px 0 0;
+    }
+    .chart-bar:hover { opacity: 0.8; }
+  </style>
+  <script>
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+</head>
+<body class="min-h-screen">
+  <!-- Navigation -->
+  <nav class="border-b sticky top-0 z-50" style="border-color: var(--border); background-color: var(--background);">
+    <div class="container mx-auto px-6 lg:px-8">
+      <div class="flex h-14 items-center justify-between">
+        <a href="index.html" class="flex items-center gap-2 text-sm font-medium" style="color: var(--foreground);">
+          <img src="assets/effectful-symbol-black.svg" alt="" class="h-5 w-5 logo-icon">
+          Effectful Design Guidelines
+        </a>
+        <div class="flex items-center gap-6">
+          <div class="hidden md:flex items-center gap-6">
+            <a href="typography.html" class="text-sm nav-link">Typography</a>
+            <a href="colors.html" class="text-sm nav-link">Colors</a>
+            <a href="spacing.html" class="text-sm nav-link">Spacing</a>
+            <a href="border-radius.html" class="text-sm nav-link">Border Radius</a>
+            <a href="layout-system.html" class="text-sm nav-link">Layout</a>
+          </div>
+          <div class="flex items-center gap-3">
+          <button id="theme-toggle" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200" style="background-color: var(--muted);" aria-label="Toggle theme">
+            <span id="theme-thumb" class="inline-flex h-5 w-5 items-center justify-center rounded-full shadow-sm transition-transform duration-200 translate-x-0.5" style="background-color: var(--background);">
+              <svg id="theme-sun" class="w-3 h-3 hidden" style="color: var(--muted-foreground);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+              <svg id="theme-moon" class="w-3 h-3" style="color: var(--muted-foreground);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+            </span>
+          </button>
+          <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="md:hidden p-2 -mr-2" style="color: var(--foreground);" aria-label="Toggle menu">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+          </div>
+        </div>
+      </div>
+      <div id="mobile-menu" class="hidden md:hidden pb-4 border-t" style="border-color: var(--border);">
+        <div class="flex flex-col gap-1 pt-3">
+          <a href="typography.html" class="text-sm py-2 px-2 rounded nav-link">Typography</a>
+          <a href="colors.html" class="text-sm py-2 px-2 rounded nav-link">Colors</a>
+          <a href="spacing.html" class="text-sm py-2 px-2 rounded nav-link">Spacing</a>
+          <a href="border-radius.html" class="text-sm py-2 px-2 rounded nav-link">Border Radius</a>
+          <a href="layout-system.html" class="text-sm py-2 px-2 rounded nav-link">Layout</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-10">
+    <div class="max-w-7xl mx-auto">
+
+      <!-- Page Header -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+        <div>
+          <h1 class="text-2xl font-bold mb-1">Dashboard</h1>
+          <p class="text-sm" style="color: var(--muted-foreground);">Welcome back. Here's an overview of your platform.</p>
+        </div>
+        <div class="flex items-center gap-3 mt-4 sm:mt-0">
+          <div class="text-sm text-right hidden sm:block" style="color: var(--muted-foreground);">
+            <div class="font-medium" style="color: var(--foreground);">Mirela Prifti</div>
+            <div class="text-xs">mirela@effectful.co</div>
+          </div>
+          <div class="h-9 w-9 rounded-full flex items-center justify-center text-sm font-semibold" style="background-color: var(--primary); color: var(--primary-foreground);">MP</div>
+        </div>
+      </div>
+
+      <!-- Stat Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <!-- Total Revenue -->
+        <div class="rounded-lg border p-6" style="border-color: var(--border); background-color: var(--card);">
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-sm font-medium" style="color: var(--muted-foreground);">Total Revenue</p>
+            <svg class="w-4 h-4" style="color: var(--muted-foreground);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="text-3xl font-bold" style="color: var(--card-foreground);">$45,231.89</div>
+          <p class="text-xs mt-2" style="color: var(--muted-foreground);"><span class="font-medium" style="color: var(--success);">+20.1%</span> from last month</p>
+        </div>
+
+        <!-- Active Users -->
+        <div class="rounded-lg border p-6" style="border-color: var(--border); background-color: var(--card);">
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-sm font-medium" style="color: var(--muted-foreground);">Active Users</p>
+            <svg class="w-4 h-4" style="color: var(--muted-foreground);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div class="text-3xl font-bold" style="color: var(--card-foreground);">2,350</div>
+          <p class="text-xs mt-2" style="color: var(--muted-foreground);"><span class="font-medium" style="color: var(--success);">+180.1%</span> from last month</p>
+        </div>
+
+        <!-- Total Orders -->
+        <div class="rounded-lg border p-6" style="border-color: var(--border); background-color: var(--card);">
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-sm font-medium" style="color: var(--muted-foreground);">Total Orders</p>
+            <svg class="w-4 h-4" style="color: var(--muted-foreground);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          </div>
+          <div class="text-3xl font-bold" style="color: var(--card-foreground);">12,234</div>
+          <p class="text-xs mt-2" style="color: var(--muted-foreground);"><span class="font-medium" style="color: var(--success);">+19%</span> from last month</p>
+        </div>
+
+        <!-- Conversion Rate -->
+        <div class="rounded-lg border p-6" style="border-color: var(--border); background-color: var(--card);">
+          <div class="flex items-center justify-between mb-3">
+            <p class="text-sm font-medium" style="color: var(--muted-foreground);">Conversion Rate</p>
+            <svg class="w-4 h-4" style="color: var(--muted-foreground);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="text-3xl font-bold" style="color: var(--card-foreground);">3.45%</div>
+          <p class="text-xs mt-2" style="color: var(--muted-foreground);"><span class="font-medium" style="color: var(--success);">+2.5%</span> from last month</p>
+        </div>
+      </div>
+
+      <!-- Chart + Activity Row -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+
+        <!-- Revenue Chart -->
+        <div class="lg:col-span-2 rounded-lg border p-6" style="border-color: var(--border); background-color: var(--card);">
+          <div class="flex items-center justify-between mb-1">
+            <h2 class="text-base font-semibold" style="color: var(--card-foreground);">Revenue Overview</h2>
+            <div class="flex gap-1">
+              <button class="px-3 py-1 text-xs font-medium rounded-md" style="background-color: var(--primary); color: var(--primary-foreground);">Monthly</button>
+              <button class="px-3 py-1 text-xs font-medium rounded-md" style="background-color: var(--secondary); color: var(--secondary-foreground);">Weekly</button>
+            </div>
+          </div>
+          <p class="text-sm mb-6" style="color: var(--muted-foreground);">Monthly revenue for the past 8 months</p>
+
+          <!-- Y-axis labels + Chart -->
+          <div class="flex gap-3">
+            <div class="flex flex-col justify-between text-xs font-mono py-1 shrink-0" style="color: var(--muted-foreground); height: 220px;">
+              <span>$50k</span>
+              <span>$40k</span>
+              <span>$30k</span>
+              <span>$20k</span>
+              <span>$10k</span>
+              <span>$0</span>
+            </div>
+            <div class="flex-1">
+              <!-- Grid lines -->
+              <div class="relative" style="height: 220px;">
+                <div class="absolute inset-0 flex flex-col justify-between">
+                  <div class="border-b" style="border-color: var(--border);"></div>
+                  <div class="border-b" style="border-color: var(--border);"></div>
+                  <div class="border-b" style="border-color: var(--border);"></div>
+                  <div class="border-b" style="border-color: var(--border);"></div>
+                  <div class="border-b" style="border-color: var(--border);"></div>
+                  <div class="border-b" style="border-color: var(--border);"></div>
+                </div>
+                <!-- Bars -->
+                <div class="relative flex items-end justify-around gap-2 sm:gap-4 h-full px-1">
+                  <div class="flex-1 flex flex-col items-center justify-end h-full">
+                    <div class="chart-bar w-full max-w-12" style="height: 45%; background-color: var(--primary);"></div>
+                  </div>
+                  <div class="flex-1 flex flex-col items-center justify-end h-full">
+                    <div class="chart-bar w-full max-w-12" style="height: 52%; background-color: var(--primary);"></div>
+                  </div>
+                  <div class="flex-1 flex flex-col items-center justify-end h-full">
+                    <div class="chart-bar w-full max-w-12" style="height: 38%; background-color: var(--primary);"></div>
+                  </div>
+                  <div class="flex-1 flex flex-col items-center justify-end h-full">
+                    <div class="chart-bar w-full max-w-12" style="height: 71%; background-color: var(--primary);"></div>
+                  </div>
+                  <div class="flex-1 flex flex-col items-center justify-end h-full">
+                    <div class="chart-bar w-full max-w-12" style="height: 62%; background-color: var(--primary);"></div>
+                  </div>
+                  <div class="flex-1 flex flex-col items-center justify-end h-full">
+                    <div class="chart-bar w-full max-w-12" style="height: 82%; background-color: var(--primary);"></div>
+                  </div>
+                  <div class="flex-1 flex flex-col items-center justify-end h-full">
+                    <div class="chart-bar w-full max-w-12" style="height: 76%; background-color: var(--primary);"></div>
+                  </div>
+                  <div class="flex-1 flex flex-col items-center justify-end h-full">
+                    <div class="chart-bar w-full max-w-12" style="height: 95%; background-color: var(--primary);"></div>
+                  </div>
+                </div>
+              </div>
+              <!-- X-axis labels -->
+              <div class="flex justify-around mt-2 text-xs" style="color: var(--muted-foreground);">
+                <span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="rounded-lg border p-6" style="border-color: var(--border); background-color: var(--card);">
+          <h2 class="text-base font-semibold mb-1" style="color: var(--card-foreground);">Recent Activity</h2>
+          <p class="text-sm mb-6" style="color: var(--muted-foreground);">Latest actions on your account</p>
+
+          <div class="space-y-5">
+            <!-- Activity 1 -->
+            <div class="flex gap-3">
+              <div class="mt-1.5 h-2 w-2 rounded-full shrink-0" style="background-color: var(--success);"></div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium leading-tight" style="color: var(--card-foreground);">New user registered</p>
+                <p class="text-xs mt-0.5" style="color: var(--muted-foreground);">olivia.m@example.com signed up</p>
+                <p class="text-xs mt-1 font-mono" style="color: var(--muted-foreground);">2 min ago</p>
+              </div>
+            </div>
+            <!-- Activity 2 -->
+            <div class="flex gap-3">
+              <div class="mt-1.5 h-2 w-2 rounded-full shrink-0" style="background-color: var(--primary);"></div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium leading-tight" style="color: var(--card-foreground);">Invoice #INV-0042 paid</p>
+                <p class="text-xs mt-0.5" style="color: var(--muted-foreground);">Payment of $1,250.00 received</p>
+                <p class="text-xs mt-1 font-mono" style="color: var(--muted-foreground);">18 min ago</p>
+              </div>
+            </div>
+            <!-- Activity 3 -->
+            <div class="flex gap-3">
+              <div class="mt-1.5 h-2 w-2 rounded-full shrink-0" style="background-color: var(--warning);"></div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium leading-tight" style="color: var(--card-foreground);">Subscription expiring</p>
+                <p class="text-xs mt-0.5" style="color: var(--muted-foreground);">Pro plan for jackson.l expires in 3 days</p>
+                <p class="text-xs mt-1 font-mono" style="color: var(--muted-foreground);">1 hour ago</p>
+              </div>
+            </div>
+            <!-- Activity 4 -->
+            <div class="flex gap-3">
+              <div class="mt-1.5 h-2 w-2 rounded-full shrink-0" style="background-color: var(--destructive);"></div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium leading-tight" style="color: var(--card-foreground);">Payment failed</p>
+                <p class="text-xs mt-0.5" style="color: var(--muted-foreground);">Charge of $89.00 was declined</p>
+                <p class="text-xs mt-1 font-mono" style="color: var(--muted-foreground);">3 hours ago</p>
+              </div>
+            </div>
+            <!-- Activity 5 -->
+            <div class="flex gap-3">
+              <div class="mt-1.5 h-2 w-2 rounded-full shrink-0" style="background-color: var(--success);"></div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium leading-tight" style="color: var(--card-foreground);">Deploy completed</p>
+                <p class="text-xs mt-0.5" style="color: var(--muted-foreground);">Production v2.4.1 is live</p>
+                <p class="text-xs mt-1 font-mono" style="color: var(--muted-foreground);">5 hours ago</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transactions Table -->
+      <div class="rounded-lg border overflow-hidden" style="border-color: var(--border); background-color: var(--card);">
+        <div class="flex items-center justify-between p-6 pb-4">
+          <div>
+            <h2 class="text-base font-semibold" style="color: var(--card-foreground);">Recent Transactions</h2>
+            <p class="text-sm mt-0.5" style="color: var(--muted-foreground);">A list of your recent transactions.</p>
+          </div>
+          <button class="text-xs font-medium px-3 py-1.5 rounded-md transition-colors" style="background-color: var(--secondary); color: var(--secondary-foreground);">View all</button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+                <th class="text-left text-xs font-medium uppercase tracking-wider px-6 py-3" style="color: var(--muted-foreground);">Customer</th>
+                <th class="text-left text-xs font-medium uppercase tracking-wider px-6 py-3 hidden sm:table-cell" style="color: var(--muted-foreground);">Email</th>
+                <th class="text-left text-xs font-medium uppercase tracking-wider px-6 py-3" style="color: var(--muted-foreground);">Status</th>
+                <th class="text-right text-xs font-medium uppercase tracking-wider px-6 py-3" style="color: var(--muted-foreground);">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Row 1 -->
+              <tr class="transition-colors" style="border-bottom: 1px solid var(--border);" onmouseover="this.style.backgroundColor='var(--muted)'" onmouseout="this.style.backgroundColor='transparent'">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-full flex items-center justify-center text-xs font-semibold shrink-0" style="background-color: var(--primary); color: var(--primary-foreground);">OM</div>
+                    <span class="text-sm font-medium">Olivia Martin</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-sm hidden sm:table-cell" style="color: var(--muted-foreground);">olivia.m@email.com</td>
+                <td class="px-6 py-4">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" style="background-color: var(--success); color: #fff;">Completed</span>
+                </td>
+                <td class="px-6 py-4 text-sm font-medium text-right">+$1,999.00</td>
+              </tr>
+              <!-- Row 2 -->
+              <tr class="transition-colors" style="border-bottom: 1px solid var(--border);" onmouseover="this.style.backgroundColor='var(--muted)'" onmouseout="this.style.backgroundColor='transparent'">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-full flex items-center justify-center text-xs font-semibold shrink-0" style="background-color: var(--muted); color: var(--muted-foreground);">JL</div>
+                    <span class="text-sm font-medium">Jackson Lee</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-sm hidden sm:table-cell" style="color: var(--muted-foreground);">jackson.l@email.com</td>
+                <td class="px-6 py-4">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" style="background-color: var(--success); color: #fff;">Completed</span>
+                </td>
+                <td class="px-6 py-4 text-sm font-medium text-right">+$39.00</td>
+              </tr>
+              <!-- Row 3 -->
+              <tr class="transition-colors" style="border-bottom: 1px solid var(--border);" onmouseover="this.style.backgroundColor='var(--muted)'" onmouseout="this.style.backgroundColor='transparent'">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-full flex items-center justify-center text-xs font-semibold shrink-0" style="background-color: var(--primary); color: var(--primary-foreground);">IN</div>
+                    <span class="text-sm font-medium">Isabella Nguyen</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-sm hidden sm:table-cell" style="color: var(--muted-foreground);">isabella.n@email.com</td>
+                <td class="px-6 py-4">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" style="background-color: var(--secondary); color: var(--secondary-foreground);">Pending</span>
+                </td>
+                <td class="px-6 py-4 text-sm font-medium text-right">+$299.00</td>
+              </tr>
+              <!-- Row 4 -->
+              <tr class="transition-colors" style="border-bottom: 1px solid var(--border);" onmouseover="this.style.backgroundColor='var(--muted)'" onmouseout="this.style.backgroundColor='transparent'">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-full flex items-center justify-center text-xs font-semibold shrink-0" style="background-color: var(--muted); color: var(--muted-foreground);">WK</div>
+                    <span class="text-sm font-medium">William Kim</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-sm hidden sm:table-cell" style="color: var(--muted-foreground);">will.k@email.com</td>
+                <td class="px-6 py-4">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" style="background-color: var(--destructive); color: var(--destructive-foreground);">Failed</span>
+                </td>
+                <td class="px-6 py-4 text-sm font-medium text-right">+$89.00</td>
+              </tr>
+              <!-- Row 5 -->
+              <tr class="transition-colors" onmouseover="this.style.backgroundColor='var(--muted)'" onmouseout="this.style.backgroundColor='transparent'">
+                <td class="px-6 py-4">
+                  <div class="flex items-center gap-3">
+                    <div class="h-8 w-8 rounded-full flex items-center justify-center text-xs font-semibold shrink-0" style="background-color: var(--primary); color: var(--primary-foreground);">SD</div>
+                    <span class="text-sm font-medium">Sofia Davis</span>
+                  </div>
+                </td>
+                <td class="px-6 py-4 text-sm hidden sm:table-cell" style="color: var(--muted-foreground);">sofia.d@email.com</td>
+                <td class="px-6 py-4">
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" style="background-color: var(--success); color: #fff;">Completed</span>
+                </td>
+                <td class="px-6 py-4 text-sm font-medium text-right">+$450.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t py-8 mt-8" style="border-color: var(--border);">
+    <div class="container mx-auto px-6 lg:px-8">
+      <p class="text-sm" style="color: var(--muted-foreground);">Effectful Design Guidelines</p>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      var toggle = document.getElementById('theme-toggle');
+      var thumb = document.getElementById('theme-thumb');
+      var sun = document.getElementById('theme-sun');
+      var moon = document.getElementById('theme-moon');
+      function applyState(isDark) {
+        sun.classList.toggle('hidden', !isDark);
+        moon.classList.toggle('hidden', isDark);
+        if (isDark) {
+          thumb.classList.remove('translate-x-0.5');
+          thumb.classList.add('translate-x-[1.375rem]');
+        } else {
+          thumb.classList.remove('translate-x-[1.375rem]');
+          thumb.classList.add('translate-x-0.5');
+        }
+      }
+      applyState(document.documentElement.classList.contains('dark'));
+      toggle.addEventListener('click', function() {
+        var isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        applyState(isDark);
+      });
+    })();
+  </script>
+</body>
+</html>
