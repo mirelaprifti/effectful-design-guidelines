@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>States – Effectful Design Guidelines</title>
+  <link rel="icon" type="image/png" href="assets/favicon-32px.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwindcss.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['IBM Plex Mono', 'monospace'],
+          },
+          colors: {
+            background: 'var(--background)',
+            foreground: 'var(--foreground)',
+            card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+            muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+            border: 'var(--border)',
+            input: 'var(--input)',
+            primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)', text: 'var(--primary-text)' },
+            secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+            destructive: { DEFAULT: 'var(--destructive)', foreground: 'var(--destructive-foreground)' },
+            ring: 'var(--ring)',
+          },
+          borderColor: { DEFAULT: 'var(--border)' },
+        },
+      },
+    }
+  </script>
+  <style>
+    :root { --background: oklch(0.985 0.002 247.839); --foreground: oklch(0.141 0.005 285.823); --card: #ffffff; --card-foreground: oklch(0.141 0.005 285.823); --muted: oklch(0.967 0.001 286.375); --muted-foreground: oklch(0.50 0.016 285.938); --border: oklch(0.92 0.004 286.32); --input: oklch(0.92 0.004 286.32); --primary: oklch(0.606 0.208 293); --primary-foreground: #ffffff; --secondary: oklch(0.90 0.004 286.375); --secondary-foreground: oklch(0.21 0.006 285.885); --primary-text: oklch(0.50 0.18 293); --destructive: oklch(0.45 0.213 27.518); --destructive-foreground: #ffffff; --ring: oklch(0.552 0.016 285.938); --radius: 0.5rem; }
+    .dark { --background: oklch(0.141 0.005 285.823); --foreground: oklch(0.985 0.002 247.839); --card: oklch(0.21 0.006 285.885); --card-foreground: oklch(0.985 0.002 247.839); --muted: oklch(0.274 0.006 286.033); --muted-foreground: oklch(0.705 0.015 286.067); --border: oklch(0.274 0.006 286.033); --input: oklch(0.274 0.006 286.033); --primary: oklch(0.606 0.208 293); --primary-foreground: #ffffff; --secondary: oklch(0.32 0.006 286.033); --secondary-foreground: oklch(0.985 0.002 247.839); --primary-text: oklch(0.72 0.15 293); --destructive: oklch(0.45 0.213 27.518); --destructive-foreground: #ffffff; --ring: oklch(0.705 0.015 286.067); }
+    body { background-color: var(--background); color: var(--foreground); font-family: 'Inter', system-ui, sans-serif; }
+    .dark .logo-icon { filter: invert(1); }
+    .nav-link { color: var(--muted-foreground); transition: color 0.15s, background-color 0.15s; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .nav-link:hover { color: var(--foreground); background-color: var(--secondary); }
+    .nav-link.active { color: var(--foreground); font-weight: 500; background-color: var(--secondary); }
+
+    /* Focus input demo */
+    .state-input { transition: border-color 0.15s ease, box-shadow 0.15s ease; }
+    .state-input:focus { outline: none; border-color: var(--ring); box-shadow: 0 0 0 3px oklch(0.606 0.208 293 / 0.15); }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .animate-spin { animation: spin 1s linear infinite; }
+
+    /* State label */
+    .state-label { font-size: 0.625rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 6px; border-radius: 4px; }
+  </style>
+  <script>
+    if (localStorage.getItem('theme') === 'dark') {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+</head>
+<body class="min-h-screen">
+  <nav class="sticky top-0 z-50" style="background-color: var(--background);">
+    <div class="border-b" style="border-color: var(--border);">
+      <div class="container mx-auto px-6 lg:px-8">
+        <div class="flex h-14 items-center justify-between">
+          <a href="index.html" class="flex items-center gap-2 text-sm font-medium" style="color: var(--foreground);">
+            <img src="assets/effectful-symbol-black.svg" alt="" class="h-6 w-6 logo-icon">
+            Effectful Design Guidelines
+          </a>
+          <button id="theme-toggle" class="relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200" style="background-color: var(--muted);" aria-label="Toggle theme">
+            <span id="theme-thumb" class="inline-flex h-5 w-5 items-center justify-center rounded-full shadow-sm transition-transform duration-200 translate-x-0.5" style="background-color: var(--background);">
+              <svg id="theme-sun" class="w-3 h-3 hidden" style="color: var(--muted-foreground);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+              <svg id="theme-moon" class="w-3 h-3" style="color: var(--muted-foreground);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+            </span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="border-b" style="border-color: var(--border);">
+      <div class="container mx-auto px-6 lg:px-8">
+        <div class="flex items-center gap-4 py-2 -mb-px">
+          <a href="index.html" class="hidden md:inline-flex items-center gap-1.5 text-sm font-medium whitespace-nowrap shrink-0" style="color: var(--foreground);"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>Home</a>
+          <div class="flex gap-1 overflow-x-auto scrollbar-hide ml-auto">
+            <a href="typography.html" class="text-sm px-3 py-1.5 rounded-md whitespace-nowrap nav-link">Typography</a>
+            <a href="colors.html" class="text-sm px-3 py-1.5 rounded-md whitespace-nowrap nav-link">Colors</a>
+            <a href="spacing.html" class="text-sm px-3 py-1.5 rounded-md whitespace-nowrap nav-link">Spacing</a>
+            <a href="border-radius.html" class="text-sm px-3 py-1.5 rounded-md whitespace-nowrap nav-link">Border Radius</a>
+            <a href="elevation.html" class="text-sm px-3 py-1.5 rounded-md whitespace-nowrap nav-link">Elevation</a>
+            <a href="states.html" class="text-sm px-3 py-1.5 rounded-md whitespace-nowrap nav-link">States</a>
+            <a href="layout-system.html" class="text-sm px-3 py-1.5 rounded-md whitespace-nowrap nav-link">Layout</a>
+            <a href="dashboard.html" class="text-sm px-3 py-1.5 rounded-md whitespace-nowrap nav-link">Demo</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+
+  <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+    <div class="max-w-5xl">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">States</h1>
+      <p class="text-lg mb-16 leading-relaxed max-w-3xl" style="color: var(--muted-foreground);">Interactive states provide visual feedback that helps users understand what they can do, what they're doing, and what happened.</p>
+      <div class="mb-12" style="border-top: 1px solid var(--border);"></div>
+
+      <!-- Page Layout with Sidebar Navigation -->
+      <div class="lg:flex lg:gap-12">
+        <!-- Sticky Section Navigation (Desktop only) -->
+        <aside class="hidden lg:block lg:w-48 shrink-0">
+          <nav class="sticky top-20" id="section-nav">
+            <p class="text-xs font-medium uppercase tracking-wide mb-4" style="color: var(--muted-foreground);">On this page</p>
+            <ul class="space-y-2 text-sm">
+              <li><a href="#overview" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Overview</a></li>
+              <li><a href="#button-states" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Button States</a></li>
+              <li><a href="#input-states" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Input States</a></li>
+              <li><a href="#link-states" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Link States</a></li>
+              <li><a href="#card-states" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Card States</a></li>
+              <li><a href="#loading" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Loading</a></li>
+              <li><a href="#validation" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Validation</a></li>
+              <li><a href="#best-practices" class="section-link block py-1 transition-colors" style="color: var(--muted-foreground);">Best Practices</a></li>
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="flex-1 min-w-0">
+
+      <!-- Overview -->
+      <section id="overview" class="mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-bold mb-6">State Overview</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Every interactive element should communicate its current state clearly. Consistent state patterns reduce cognitive load and build user confidence.</p>
+
+        <div class="rounded-lg border overflow-hidden" style="border-color: var(--border);">
+          <table class="w-full text-sm">
+            <thead>
+              <tr style="background-color: var(--muted);">
+                <th class="text-left p-3 font-medium">State</th>
+                <th class="text-left p-3 font-medium">Trigger</th>
+                <th class="text-left p-3 font-medium">Visual Cue</th>
+                <th class="text-left p-3 font-medium">Purpose</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-top: 1px solid var(--border);"><td class="p-3 font-medium">Default</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">None</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Base appearance</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Resting state of the element</td></tr>
+              <tr style="border-top: 1px solid var(--border);"><td class="p-3 font-medium">Hover</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Mouse enter</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Brightness shift, bg tint</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Indicates interactivity</td></tr>
+              <tr style="border-top: 1px solid var(--border);"><td class="p-3 font-medium">Active</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Mouse down / tap</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Scale down, darker shade</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Confirms the press is registered</td></tr>
+              <tr style="border-top: 1px solid var(--border);"><td class="p-3 font-medium">Focus</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Tab / keyboard nav</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Focus ring (outline)</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Keyboard navigation indicator</td></tr>
+              <tr style="border-top: 1px solid var(--border);"><td class="p-3 font-medium">Disabled</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Programmatic</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Reduced opacity, no cursor</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Element is unavailable</td></tr>
+              <tr style="border-top: 1px solid var(--border);"><td class="p-3 font-medium">Loading</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Async action</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Spinner, skeleton, progress</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Operation is in progress</td></tr>
+              <tr style="border-top: 1px solid var(--border);"><td class="p-3 font-medium">Error</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Validation failure</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Red border, error message</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Input needs correction</td></tr>
+              <tr style="border-top: 1px solid var(--border);"><td class="p-3 font-medium">Success</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Validation pass</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Green border, check icon</td><td class="p-3 text-xs" style="color: var(--muted-foreground);">Input is valid</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Button States -->
+      <section id="button-states" class="mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-bold mb-6">Button States</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Each state shows a visible change from the default appearance. All transitions use <code class="px-1 py-0.5 rounded text-xs" style="background-color: var(--muted);">150ms</code> duration.</p>
+
+        <!-- Primary Button -->
+        <div class="rounded-lg border p-6 mb-6" style="border-color: var(--border);">
+          <h3 class="font-semibold mb-6">Primary Button</h3>
+          <div class="flex flex-wrap gap-6 items-end">
+            <!-- Default -->
+            <div class="text-center">
+              <div class="px-4 py-2 text-sm font-medium text-white rounded-md mb-2" style="background-color: var(--primary);">Button</div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Default</span>
+            </div>
+            <!-- Hover -->
+            <div class="text-center">
+              <div class="px-4 py-2 text-sm font-medium text-white rounded-md mb-2" style="background-color: oklch(0.66 0.208 293);">Button</div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Hover</span>
+            </div>
+            <!-- Active -->
+            <div class="text-center">
+              <div class="px-4 py-2 text-sm font-medium text-white rounded-md mb-2" style="background-color: oklch(0.55 0.208 293); transform: scale(0.97);">Button</div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Active</span>
+            </div>
+            <!-- Focus -->
+            <div class="text-center">
+              <div class="px-4 py-2 text-sm font-medium text-white rounded-md mb-2" style="background-color: var(--primary); box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);">Button</div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Focus</span>
+            </div>
+            <!-- Disabled -->
+            <div class="text-center">
+              <div class="px-4 py-2 text-sm font-medium text-white rounded-md mb-2 opacity-50" style="background-color: var(--primary); cursor: not-allowed;">Button</div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Disabled</span>
+            </div>
+            <!-- Loading -->
+            <div class="text-center">
+              <div class="px-4 py-2 text-sm font-medium text-white rounded-md mb-2 inline-flex items-center gap-2 opacity-90" style="background-color: var(--primary);">
+                <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                Saving...
+              </div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Loading</span>
+            </div>
+          </div>
+          <!-- CSS Reference -->
+          <div class="mt-6 rounded-lg p-4" style="background-color: var(--muted);">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs font-mono" style="color: var(--muted-foreground);">
+              <div><strong class="text-foreground">Hover:</strong> brightness(1.1)</div>
+              <div><strong class="text-foreground">Active:</strong> scale(0.97) brightness(0.9)</div>
+              <div><strong class="text-foreground">Focus:</strong> ring-2 ring-offset-2</div>
+              <div><strong class="text-foreground">Disabled:</strong> opacity-50 pointer-events-none</div>
+              <div><strong class="text-foreground">Loading:</strong> spinner + disabled</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Secondary Button (Outline) -->
+        <div class="rounded-lg border p-6 mb-6" style="border-color: var(--border);">
+          <h3 class="font-semibold mb-6">Secondary Button</h3>
+          <div class="flex flex-wrap gap-6 items-end">
+            <!-- Default -->
+            <div class="text-center">
+              <div class="px-4 py-2 text-sm font-medium rounded-md border mb-2" style="border-color: var(--border); background: transparent; color: var(--foreground);">Button</div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Default</span>
+            </div>
+            <!-- Hover -->
+            <div class="text-center">
+              <div class="px-4 py-2 text-sm font-medium rounded-md border mb-2" style="border-color: var(--border); background-color: oklch(0.96 0.002 286.375); color: var(--foreground);">Button</div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Hover</span>
+            </div>
+            <!-- Active -->
+            <div class="text-center">
+              <div class="px-4 py-2 text-sm font-medium rounded-md border mb-2" style="border-color: var(--border); background-color: oklch(0.92 0.003 286.375); color: var(--foreground); transform: scale(0.97);">Button</div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Active</span>
+            </div>
+            <!-- Focus -->
+            <div class="text-center">
+              <div class="px-4 py-2 text-sm font-medium rounded-md border mb-2" style="border-color: var(--border); background: transparent; color: var(--foreground); box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);">Button</div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Focus</span>
+            </div>
+            <!-- Disabled -->
+            <div class="text-center">
+              <div class="px-4 py-2 text-sm font-medium rounded-md border mb-2 opacity-50" style="border-color: var(--border); background: transparent; color: var(--foreground);">Button</div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Disabled</span>
+            </div>
+          </div>
+          <div class="mt-6 rounded-lg p-4" style="background-color: var(--muted);">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs font-mono" style="color: var(--muted-foreground);">
+              <div><strong class="text-foreground">Hover:</strong> subtle bg fill</div>
+              <div><strong class="text-foreground">Active:</strong> darker fill + scale(0.97)</div>
+              <div><strong class="text-foreground">Focus:</strong> ring-2 ring-offset-2</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Destructive Button -->
+        <div class="rounded-lg border p-6 mt-6" style="border-color: var(--border);">
+          <h3 class="font-semibold mb-6">Destructive Button</h3>
+          <div class="flex flex-wrap gap-6 items-end">
+            <div class="text-center">
+              <div class="px-4 py-2 text-sm font-medium text-white rounded-md mb-2" style="background-color: var(--destructive);">Delete</div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Default</span>
+            </div>
+            <div class="text-center">
+              <div class="px-4 py-2 text-sm font-medium text-white rounded-md mb-2" style="background-color: oklch(0.50 0.213 27.518);">Delete</div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Hover</span>
+            </div>
+            <div class="text-center">
+              <div class="px-4 py-2 text-sm font-medium text-white rounded-md mb-2" style="background-color: oklch(0.40 0.213 27.518); transform: scale(0.97);">Delete</div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Active</span>
+            </div>
+            <div class="text-center">
+              <div class="px-4 py-2 text-sm font-medium text-white rounded-md mb-2" style="background-color: var(--destructive); box-shadow: 0 0 0 2px var(--background), 0 0 0 4px oklch(0.45 0.213 27.518 / 0.5);">Delete</div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Focus</span>
+            </div>
+            <div class="text-center">
+              <div class="px-4 py-2 text-sm font-medium text-white rounded-md mb-2 opacity-50" style="background-color: var(--destructive);">Delete</div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Disabled</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Input States -->
+      <section id="input-states" class="mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-bold mb-6">Input States</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Inputs communicate state through border color, background tint, and helper text.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Default Input -->
+          <div class="rounded-lg border p-5" style="border-color: var(--border);">
+            <span class="state-label mb-3 inline-block" style="color: var(--muted-foreground); background-color: var(--muted);">Default</span>
+            <div class="space-y-1.5">
+              <label class="text-sm font-medium">Email</label>
+              <div class="w-full px-3 py-2 text-sm rounded-md" style="border: 1px solid var(--input); background-color: var(--background); color: var(--muted-foreground);">you@example.com</div>
+            </div>
+          </div>
+
+          <!-- Focus Input -->
+          <div class="rounded-lg border p-5" style="border-color: var(--border);">
+            <span class="state-label mb-3 inline-block" style="color: var(--muted-foreground); background-color: var(--muted);">Focus</span>
+            <div class="space-y-1.5">
+              <label class="text-sm font-medium">Email</label>
+              <div class="w-full px-3 py-2 text-sm rounded-md" style="border: 1px solid var(--ring); background-color: var(--background); box-shadow: 0 0 0 3px oklch(0.606 0.208 293 / 0.15);">user@</div>
+            </div>
+            <p class="text-xs mt-2 font-mono" style="color: var(--muted-foreground);">border-ring + ring glow</p>
+          </div>
+
+          <!-- Disabled Input -->
+          <div class="rounded-lg border p-5" style="border-color: var(--border);">
+            <span class="state-label mb-3 inline-block" style="color: var(--muted-foreground); background-color: var(--muted);">Disabled</span>
+            <div class="space-y-1.5">
+              <label class="text-sm font-medium opacity-50">Email</label>
+              <div class="w-full px-3 py-2 text-sm rounded-md opacity-50" style="border: 1px solid var(--input); background-color: var(--muted); cursor: not-allowed;">read-only value</div>
+            </div>
+            <p class="text-xs mt-2 font-mono" style="color: var(--muted-foreground);">opacity-50 bg-muted</p>
+          </div>
+
+          <!-- Error Input -->
+          <div class="rounded-lg border p-5" style="border-color: var(--border);">
+            <span class="state-label mb-3 inline-block" style="color: oklch(0.45 0.213 27.518); background-color: oklch(0.45 0.213 27.518 / 0.08);">Error</span>
+            <div class="space-y-1.5">
+              <label class="text-sm font-medium">Email</label>
+              <div class="w-full px-3 py-2 text-sm rounded-md" style="border: 1px solid var(--destructive); background-color: var(--background);">not-an-email</div>
+              <p class="text-xs flex items-center gap-1" style="color: var(--destructive);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+                Please enter a valid email.
+              </p>
+            </div>
+          </div>
+
+          <!-- Success Input -->
+          <div class="rounded-lg border p-5" style="border-color: var(--border);">
+            <span class="state-label mb-3 inline-block" style="color: oklch(0.60 0.15 145); background-color: oklch(0.60 0.15 145 / 0.08);">Success</span>
+            <div class="space-y-1.5">
+              <label class="text-sm font-medium">Email</label>
+              <div class="relative">
+                <div class="w-full px-3 py-2 pr-9 text-sm rounded-md" style="border: 1px solid oklch(0.60 0.15 145); background-color: var(--background);">user@example.com</div>
+                <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4" style="color: oklch(0.60 0.15 145);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+              </div>
+              <p class="text-xs flex items-center gap-1" style="color: oklch(0.60 0.15 145);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+                Email is valid.
+              </p>
+            </div>
+          </div>
+
+          <!-- Warning Input -->
+          <div class="rounded-lg border p-5" style="border-color: var(--border);">
+            <span class="state-label mb-3 inline-block" style="color: oklch(0.55 0.15 75); background-color: oklch(0.65 0.15 75 / 0.1);">Warning</span>
+            <div class="space-y-1.5">
+              <label class="text-sm font-medium">Password</label>
+              <div class="w-full px-3 py-2 text-sm rounded-md" style="border: 1px solid oklch(0.65 0.15 75); background-color: var(--background);">••••</div>
+              <p class="text-xs flex items-center gap-1" style="color: oklch(0.55 0.15 75);">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+                Password is too weak.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Demo -->
+        <div class="rounded-lg border p-6 mt-6" style="border-color: var(--border); background-color: var(--card);">
+          <h3 class="font-semibold mb-3">Try it</h3>
+          <p class="text-xs mb-4" style="color: var(--muted-foreground);">Click into this input to see the focus ring live.</p>
+          <div class="max-w-sm space-y-1.5">
+            <label class="text-sm font-medium">Email</label>
+            <input type="text" placeholder="you@example.com" class="state-input w-full px-3 py-2 text-sm rounded-md" style="border: 1px solid var(--input); background-color: var(--background);">
+          </div>
+        </div>
+      </section>
+
+      <!-- Link States -->
+      <section id="link-states" class="mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-bold mb-6">Link States</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Links use color and text decoration to communicate state.</p>
+
+        <div class="rounded-lg border p-6" style="border-color: var(--border);">
+          <div class="flex flex-wrap gap-8 items-end">
+            <div class="text-center">
+              <div class="mb-2"><span class="text-sm font-medium" style="color: var(--primary-text);">Learn more</span></div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Default</span>
+            </div>
+            <div class="text-center">
+              <div class="mb-2"><span class="text-sm font-medium underline" style="color: var(--primary-text);">Learn more</span></div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Hover</span>
+            </div>
+            <div class="text-center">
+              <div class="mb-2"><span class="text-sm font-medium underline" style="color: oklch(0.45 0.18 293);">Learn more</span></div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Active</span>
+            </div>
+            <div class="text-center">
+              <div class="mb-2"><span class="text-sm font-medium" style="color: var(--primary-text); outline: 2px solid var(--ring); outline-offset: 2px; border-radius: 2px;">Learn more</span></div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Focus</span>
+            </div>
+            <div class="text-center">
+              <div class="mb-2 opacity-50"><span class="text-sm font-medium" style="color: var(--primary-text);">Learn more</span></div>
+              <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Disabled</span>
+            </div>
+          </div>
+          <div class="mt-6 rounded-lg p-4" style="background-color: var(--muted);">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 text-xs font-mono" style="color: var(--muted-foreground);">
+              <div><strong class="text-foreground">Hover:</strong> underline</div>
+              <div><strong class="text-foreground">Active:</strong> underline + darker color</div>
+              <div><strong class="text-foreground">Focus:</strong> outline-2 outline-ring</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Card States -->
+      <section id="card-states" class="mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-bold mb-6">Card States</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Interactive cards use border color shifts to indicate hover and focus.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <div class="rounded-lg border p-4 mb-2" style="border-color: var(--border); background-color: var(--card);">
+              <p class="font-medium text-sm mb-1">Card Title</p>
+              <p class="text-xs" style="color: var(--muted-foreground);">Supporting description text.</p>
+            </div>
+            <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Default</span>
+          </div>
+          <div>
+            <div class="rounded-lg border p-4 mb-2" style="border-color: var(--primary); background-color: var(--card);">
+              <p class="font-medium text-sm mb-1">Card Title</p>
+              <p class="text-xs" style="color: var(--muted-foreground);">Supporting description text.</p>
+            </div>
+            <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Hover</span>
+          </div>
+          <div>
+            <div class="rounded-lg border p-4 mb-2" style="border-color: var(--border); background-color: var(--card); box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);">
+              <p class="font-medium text-sm mb-1">Card Title</p>
+              <p class="text-xs" style="color: var(--muted-foreground);">Supporting description text.</p>
+            </div>
+            <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Focus</span>
+          </div>
+        </div>
+        <div class="mt-4 rounded-lg p-4" style="background-color: var(--muted);">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono" style="color: var(--muted-foreground);">
+            <div><strong class="text-foreground">Hover:</strong> border-primary</div>
+            <div><strong class="text-foreground">Focus:</strong> ring-2 ring-offset-2</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Table Row States -->
+
+      <!-- Loading States -->
+      <section id="loading" class="mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-bold mb-6">Loading</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Loading states indicate that an operation is in progress.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Spinner Button -->
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold">Button with Spinner</h3>
+              <code class="text-xs px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">spinner + disabled</code>
+            </div>
+            <div class="flex flex-wrap gap-3 items-center">
+              <div class="text-center">
+                <div class="px-4 py-2 text-sm font-medium text-white rounded-md mb-2" style="background-color: var(--primary);">Save</div>
+                <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Default</span>
+              </div>
+              <svg class="w-5 h-5 mx-1" style="color: var(--muted-foreground);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m-4-4 4 4-4 4"/></svg>
+              <div class="text-center">
+                <div class="px-4 py-2 text-sm font-medium text-white rounded-md mb-2 inline-flex items-center gap-2 opacity-90" style="background-color: var(--primary);">
+                  <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+                  Saving...
+                </div>
+                <span class="state-label" style="color: var(--muted-foreground); background-color: var(--muted);">Loading</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Skeleton Loading -->
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold">Skeleton</h3>
+              <code class="text-xs px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">pulse animation</code>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full animate-pulse" style="background-color: var(--muted);"></div>
+                <div class="flex-1 space-y-2">
+                  <div class="h-3 rounded w-1/3 animate-pulse" style="background-color: var(--muted);"></div>
+                  <div class="h-3 rounded w-2/3 animate-pulse" style="background-color: var(--muted);"></div>
+                </div>
+              </div>
+              <div class="h-3 rounded w-full animate-pulse" style="background-color: var(--muted);"></div>
+              <div class="h-3 rounded w-4/5 animate-pulse" style="background-color: var(--muted);"></div>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold">Progress Bar</h3>
+              <code class="text-xs px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">fill width</code>
+            </div>
+            <div class="space-y-3">
+              <div>
+                <div class="flex justify-between text-xs mb-1"><span>Uploading...</span><span style="color: var(--muted-foreground);">65%</span></div>
+                <div class="h-2 rounded-full overflow-hidden" style="background-color: var(--muted);">
+                  <div class="h-full rounded-full" style="background-color: var(--primary); width: 65%;"></div>
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between text-xs mb-1"><span>Complete</span><span style="color: var(--muted-foreground);">100%</span></div>
+                <div class="h-2 rounded-full overflow-hidden" style="background-color: var(--muted);">
+                  <div class="h-full rounded-full" style="background-color: oklch(0.60 0.15 145); width: 100%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inline Spinner -->
+          <div class="rounded-lg border p-6" style="border-color: var(--border);">
+            <div class="flex justify-between items-center mb-4">
+              <h3 class="font-semibold">Inline Spinner</h3>
+              <code class="text-xs px-2 py-1 rounded" style="background-color: var(--muted); color: var(--muted-foreground);">SVG rotate</code>
+            </div>
+            <div class="flex items-center gap-4">
+              <svg class="animate-spin h-5 w-5" style="color: var(--primary);" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+              <span class="text-sm" style="color: var(--muted-foreground);">Loading data...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Validation -->
+      <section id="validation" class="mb-20 scroll-mt-24">
+        <h2 class="text-2xl font-bold mb-6">Validation</h2>
+        <p class="text-sm mb-8" style="color: var(--muted-foreground);">Validation states use color, icons, and helper text together. Never rely on color alone.</p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Form-level Error -->
+          <div class="rounded-lg border p-6 md:col-span-2" style="border-color: var(--border);">
+            <h3 class="font-semibold mb-4">Form-level Alert</h3>
+            <div class="flex flex-col sm:flex-row gap-4">
+              <div class="flex-1 rounded-md border p-3 flex items-start gap-2" style="border-color: oklch(0.45 0.213 27.518 / 0.3); background-color: oklch(0.45 0.213 27.518 / 0.06);">
+                <svg class="w-4 h-4 mt-0.5 shrink-0" style="color: var(--destructive);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+                <div>
+                  <p class="text-sm font-medium" style="color: var(--destructive);">Unable to save</p>
+                  <p class="text-xs mt-0.5" style="color: var(--muted-foreground);">Please fix the errors below and try again.</p>
+                </div>
+              </div>
+              <div class="flex-1 rounded-md border p-3 flex items-start gap-2" style="border-color: oklch(0.60 0.15 145 / 0.3); background-color: oklch(0.60 0.15 145 / 0.06);">
+                <svg class="w-4 h-4 mt-0.5 shrink-0" style="color: oklch(0.60 0.15 145);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>
+                <div>
+                  <p class="text-sm font-medium" style="color: oklch(0.60 0.15 145);">Changes saved</p>
+                  <p class="text-xs mt-0.5" style="color: var(--muted-foreground);">Your settings have been updated.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Best Practices -->
+      <section id="best-practices" class="pt-12 mb-20 scroll-mt-24" style="border-top: 1px solid var(--border);">
+        <h2 class="text-2xl font-bold mb-6">Best Practices</h2>
+        <div class="flex flex-wrap gap-4">
+          <div class="w-full md:w-[calc(50%-8px)] rounded-lg border p-5" style="border-color: var(--border); background-color: var(--card);">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-primary">✓</span>
+              <h3 class="font-semibold text-sm">Always Provide Focus Rings</h3>
+            </div>
+            <p class="text-sm" style="color: var(--muted-foreground);">Never remove focus outlines without replacing them. Use <code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">focus-visible</code> to limit rings to keyboard navigation only.</p>
+          </div>
+          <div class="w-full md:w-[calc(50%-8px)] rounded-lg border p-5" style="border-color: var(--border); background-color: var(--card);">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-primary">✓</span>
+              <h3 class="font-semibold text-sm">Don't Rely on Color Alone</h3>
+            </div>
+            <p class="text-sm" style="color: var(--muted-foreground);">Pair color changes with text, icons, or shape changes. This ensures states are perceivable for color-blind users.</p>
+          </div>
+          <div class="w-full md:w-[calc(50%-8px)] rounded-lg border p-5" style="border-color: var(--border); background-color: var(--card);">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-primary">✓</span>
+              <h3 class="font-semibold text-sm">Use 150ms Transitions</h3>
+            </div>
+            <p class="text-sm" style="color: var(--muted-foreground);">Animate all state changes with <code class="px-1.5 py-0.5 rounded text-xs" style="background-color: var(--muted);">transition-all duration-150</code>. Instant changes feel jarring; too-slow transitions feel sluggish.</p>
+          </div>
+          <div class="w-full md:w-[calc(50%-8px)] rounded-lg border p-5" style="border-color: var(--border); background-color: var(--card);">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-primary">✓</span>
+              <h3 class="font-semibold text-sm">Explain Disabled States</h3>
+            </div>
+            <p class="text-sm" style="color: var(--muted-foreground);">When possible, use a tooltip or helper text to explain why an element is disabled and what the user can do to enable it.</p>
+          </div>
+        </div>
+      </section>
+
+        </div><!-- End Main Content Area -->
+      </div><!-- End Page Layout with Sidebar -->
+    </div>
+  </main>
+
+  <!-- Scroll Spy Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.section-link');
+
+      document.documentElement.style.scrollBehavior = 'smooth';
+
+      function updateActiveLink() {
+        const scrollPosition = window.scrollY + 100;
+
+        sections.forEach(section => {
+          const sectionTop = section.offsetTop;
+          const sectionHeight = section.offsetHeight;
+          const sectionId = section.getAttribute('id');
+
+          if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+            navLinks.forEach(link => {
+              link.style.color = 'var(--muted-foreground)';
+              link.style.fontWeight = '400';
+              link.style.borderLeft = 'none';
+              link.style.paddingLeft = '0';
+
+              if (link.getAttribute('href') === '#' + sectionId) {
+                link.style.color = 'var(--foreground)';
+                link.style.fontWeight = '500';
+                link.style.borderLeft = '2px solid var(--primary)';
+                link.style.paddingLeft = '12px';
+              }
+            });
+          }
+        });
+      }
+
+      window.addEventListener('scroll', updateActiveLink);
+      updateActiveLink();
+    });
+  </script>
+
+  <!-- Footer -->
+  <footer class="border-t py-8 mt-8" style="border-color: var(--border);">
+    <div class="container mx-auto px-6 lg:px-8">
+      <p class="text-sm" style="color: var(--muted-foreground);">Effectful Design Guidelines</p>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      var toggle = document.getElementById('theme-toggle');
+      var thumb = document.getElementById('theme-thumb');
+      var sun = document.getElementById('theme-sun');
+      var moon = document.getElementById('theme-moon');
+      function applyState(isDark) {
+        sun.classList.toggle('hidden', !isDark);
+        moon.classList.toggle('hidden', isDark);
+        if (isDark) {
+          thumb.classList.remove('translate-x-0.5');
+          thumb.classList.add('translate-x-[1.375rem]');
+        } else {
+          thumb.classList.remove('translate-x-[1.375rem]');
+          thumb.classList.add('translate-x-0.5');
+        }
+      }
+      applyState(document.documentElement.classList.contains('dark'));
+      toggle.addEventListener('click', function() {
+        var isDark = document.documentElement.classList.toggle('dark');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        applyState(isDark);
+      });
+    })();
+  </script>
+  <script>document.querySelectorAll(".nav-link").forEach(function(a){if(a.getAttribute("href")===location.pathname.split("/").pop())a.classList.add("active")});</script>
+</body>
+</html>
